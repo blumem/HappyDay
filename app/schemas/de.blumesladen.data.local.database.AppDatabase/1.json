@@ -1,0 +1,87 @@
+{
+  "formatVersion": 1,
+  "database": {
+    "version": 1,
+    "identityHash": "96ffab132471fa9191755aba699247de",
+    "entities": [
+      {
+        "tableName": "DiaryEntry",
+        "createSql": "CREATE TABLE IF NOT EXISTS `${TABLE_NAME}` (`uid` INTEGER PRIMARY KEY AUTOINCREMENT NOT NULL, `entry_date` TEXT NOT NULL, `abstinent` INTEGER NOT NULL DEFAULT 0, `exercised` INTEGER NOT NULL DEFAULT 0, `for_myself` TEXT NOT NULL, `for_others` TEXT NOT NULL, `unexpressed_emotions` TEXT DEFAULT NULL, `something_good` TEXT DEFAULT NULL, `anticipation` TEXT DEFAULT NULL)",
+        "fields": [
+          {
+            "fieldPath": "uid",
+            "columnName": "uid",
+            "affinity": "INTEGER",
+            "notNull": true
+          },
+          {
+            "fieldPath": "entryDate",
+            "columnName": "entry_date",
+            "affinity": "TEXT",
+            "notNull": true
+          },
+          {
+            "fieldPath": "abstinent",
+            "columnName": "abstinent",
+            "affinity": "INTEGER",
+            "notNull": true,
+            "defaultValue": "0"
+          },
+          {
+            "fieldPath": "exercised",
+            "columnName": "exercised",
+            "affinity": "INTEGER",
+            "notNull": true,
+            "defaultValue": "0"
+          },
+          {
+            "fieldPath": "forMyself",
+            "columnName": "for_myself",
+            "affinity": "TEXT",
+            "notNull": true
+          },
+          {
+            "fieldPath": "forOthers",
+            "columnName": "for_others",
+            "affinity": "TEXT",
+            "notNull": true
+          },
+          {
+            "fieldPath": "unexpressedEmotions",
+            "columnName": "unexpressed_emotions",
+            "affinity": "TEXT",
+            "notNull": false,
+            "defaultValue": "NULL"
+          },
+          {
+            "fieldPath": "somethingGood",
+            "columnName": "something_good",
+            "affinity": "TEXT",
+            "notNull": false,
+            "defaultValue": "NULL"
+          },
+          {
+            "fieldPath": "anticipation",
+            "columnName": "anticipation",
+            "affinity": "TEXT",
+            "notNull": false,
+            "defaultValue": "NULL"
+          }
+        ],
+        "primaryKey": {
+          "autoGenerate": true,
+          "columnNames": [
+            "uid"
+          ]
+        },
+        "indices": [],
+        "foreignKeys": []
+      }
+    ],
+    "views": [],
+    "setupQueries": [
+      "CREATE TABLE IF NOT EXISTS room_master_table (id INTEGER PRIMARY KEY,identity_hash TEXT)",
+      "INSERT OR REPLACE INTO room_master_table (id,identity_hash) VALUES(42, '96ffab132471fa9191755aba699247de')"
+    ]
+  }
+}
