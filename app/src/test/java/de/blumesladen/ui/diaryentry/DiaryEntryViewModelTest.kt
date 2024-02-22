@@ -17,6 +17,8 @@
 package de.blumesladen.ui.diaryentry
 
 
+import de.blumesladen.data.DiaryEntryRepository
+import de.blumesladen.data.local.database.DiaryEntry
 import kotlinx.coroutines.ExperimentalCoroutinesApi
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.first
@@ -24,7 +26,6 @@ import kotlinx.coroutines.flow.flow
 import kotlinx.coroutines.test.runTest
 import org.junit.Assert.assertEquals
 import org.junit.Test
-import de.blumesladen.data.DiaryEntryRepository
 
 /**
  * Example local unit test, which will execute on the development machine (host).
@@ -35,25 +36,25 @@ import de.blumesladen.data.DiaryEntryRepository
 class DiaryEntryViewModelTest {
     @Test
     fun uiState_initiallyLoading() = runTest {
-        val viewModel = DiaryEntryViewModel(FakeDiaryEntryRepository())
-        assertEquals(viewModel.uiState.first(), DiaryEntryUiState.Loading)
+        val viewModel = DiaryEntriesViewModel(FakeDiaryEntryRepository())
+        assertEquals(viewModel.uiState.first(), DiaryEntriesUiState.Loading)
     }
 
     @Test
     fun uiState_onItemSaved_isDisplayed() = runTest {
-        val viewModel = DiaryEntryViewModel(FakeDiaryEntryRepository())
-        assertEquals(viewModel.uiState.first(), DiaryEntryUiState.Loading)
+        val viewModel = DiaryEntriesViewModel(FakeDiaryEntryRepository())
+        assertEquals(viewModel.uiState.first(), DiaryEntriesUiState.Loading)
     }
 }
 
 private class FakeDiaryEntryRepository : DiaryEntryRepository {
 
-    private val data = mutableListOf<String>()
+    private val data = mutableListOf<DiaryEntry>()
 
-    override val diaryEntrys: Flow<List<String>>
+    override val diaryEntrys: Flow<List<DiaryEntry>>
         get() = flow { emit(data.toList()) }
 
-    override suspend fun add(name: String) {
-        data.add(0, name)
+    override suspend fun add(entry: DiaryEntry) {
+        data.add(0, entry)
     }
 }

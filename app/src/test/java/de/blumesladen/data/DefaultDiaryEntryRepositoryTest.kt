@@ -16,6 +16,8 @@
 
 package de.blumesladen.data
 
+import de.blumesladen.data.local.database.DiaryEntry
+import de.blumesladen.data.local.database.DiaryEntryDao
 import kotlinx.coroutines.ExperimentalCoroutinesApi
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.first
@@ -23,8 +25,6 @@ import kotlinx.coroutines.flow.flow
 import kotlinx.coroutines.test.runTest
 import org.junit.Assert.assertEquals
 import org.junit.Test
-import de.blumesladen.data.local.database.DiaryEntry
-import de.blumesladen.data.local.database.DiaryEntryDao
 
 /**
  * Unit tests for [DefaultDiaryEntryRepository].
@@ -36,12 +36,15 @@ class DefaultDiaryEntryRepositoryTest {
     fun diaryEntrys_newItemSaved_itemIsReturned() = runTest {
         val repository = DefaultDiaryEntryRepository(FakeDiaryEntryDao())
 
-        repository.add("Repository")
+        repository.add(FAKE_DIARY_ENTRY)
 
         assertEquals(repository.diaryEntrys.first().size, 1)
     }
 
 }
+
+private val FAKE_DIARY_ENTRY : DiaryEntry
+    get() = DiaryEntry()
 
 private class FakeDiaryEntryDao : DiaryEntryDao {
 
