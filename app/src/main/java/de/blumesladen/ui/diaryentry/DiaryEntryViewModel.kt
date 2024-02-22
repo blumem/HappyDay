@@ -19,22 +19,20 @@ package de.blumesladen.ui.diaryentry
 import android.annotation.SuppressLint
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
-import androidx.room.ColumnInfo
 import dagger.hilt.android.lifecycle.HiltViewModel
-import kotlinx.coroutines.flow.SharingStarted
-import kotlinx.coroutines.flow.StateFlow
-import kotlinx.coroutines.flow.catch
-import kotlinx.coroutines.flow.map
-import kotlinx.coroutines.flow.stateIn
-import kotlinx.coroutines.launch
 import de.blumesladen.data.DiaryEntryRepository
 import de.blumesladen.data.local.database.DiaryEntry
 import de.blumesladen.ui.diaryentry.DiaryEntriesUiState.Error
 import de.blumesladen.ui.diaryentry.DiaryEntriesUiState.Loading
 import de.blumesladen.ui.diaryentry.DiaryEntriesUiState.Success
 import kotlinx.coroutines.flow.MutableStateFlow
+import kotlinx.coroutines.flow.SharingStarted
+import kotlinx.coroutines.flow.StateFlow
 import kotlinx.coroutines.flow.asStateFlow
-import java.time.LocalDateTime
+import kotlinx.coroutines.flow.catch
+import kotlinx.coroutines.flow.map
+import kotlinx.coroutines.flow.stateIn
+import kotlinx.coroutines.launch
 import javax.inject.Inject
 
 @HiltViewModel
@@ -47,7 +45,7 @@ class DiaryEntryViewModel @Inject constructor(
     val uiState: StateFlow<DiaryEntryUiState>  = _uiState.asStateFlow()
 
     /**
-     * Updates the [itemUiState] with the value provided in the argument. This method also triggers
+     * Updates the [DiaryEntryUiState] with the value provided in the argument. This method also triggers
      * a validation for input values.
      */
     fun updateUiState(diaryEntry: DiaryEntryUiState) {
@@ -64,7 +62,7 @@ class DiaryEntryViewModel @Inject constructor(
 @SuppressLint("NewApi")
 data class DiaryEntryUiState (
     var diaryEntry: DiaryEntry
-) { }
+)
 
 
 @HiltViewModel

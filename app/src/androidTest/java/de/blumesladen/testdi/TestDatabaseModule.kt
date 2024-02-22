@@ -32,7 +32,7 @@ import de.blumesladen.data.di.FakeDiaryEntryRepository
 interface FakeDataModule {
 
     @Binds
-    abstract fun bindRepository(
+    fun bindRepository(
         fakeRepository: FakeDiaryEntryRepository
     ): DiaryEntryRepository
 }

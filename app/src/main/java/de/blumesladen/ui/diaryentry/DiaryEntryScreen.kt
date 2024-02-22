@@ -43,7 +43,7 @@ import de.blumesladen.ui.diaryentry.DiaryEntriesUiState.*
 @Composable
 fun DiaryEntryScreen(modifier: Modifier = Modifier, viewModel: DiaryEntriesViewModel = hiltViewModel()) {
     val items by viewModel.uiState.collectAsStateWithLifecycle()
-    if (items is DiaryEntriesUiState.Success) {
+    if (items is Success) {
         DiaryEntryScreen(
             items = (items as Success).data,
             onSave = viewModel::addDiaryEntry,
