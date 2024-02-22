@@ -41,6 +41,7 @@ class DiaryEntryViewModel @Inject constructor(
 ) : ViewModel() {
 
     // Backing property to avoid state updates from other classes
+    @SuppressLint("NewApi")
     private var _uiState = MutableStateFlow(DiaryEntryUiState(DiaryEntry()))
     val uiState: StateFlow<DiaryEntryUiState>  = _uiState.asStateFlow()
 

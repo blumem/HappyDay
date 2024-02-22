@@ -16,7 +16,6 @@
 
 package de.blumesladen.ui.diaryentry
 
-import de.blumesladen.ui.theme.MyApplicationTheme
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Row
@@ -38,7 +37,8 @@ import androidx.hilt.navigation.compose.hiltViewModel
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import de.blumesladen.data.di.fakeDiaryEntrys
 import de.blumesladen.data.local.database.DiaryEntry
-import de.blumesladen.ui.diaryentry.DiaryEntriesUiState.*
+import de.blumesladen.ui.diaryentry.DiaryEntriesUiState.Success
+import de.blumesladen.ui.theme.MyApplicationTheme
 
 @Composable
 fun DiaryEntryScreen(modifier: Modifier = Modifier, viewModel: DiaryEntriesViewModel = hiltViewModel()) {
@@ -46,7 +46,7 @@ fun DiaryEntryScreen(modifier: Modifier = Modifier, viewModel: DiaryEntriesViewM
     if (items is Success) {
         DiaryEntryScreen(
             items = (items as Success).data,
-            onSave = viewModel::addDiaryEntry,
+            // onSave = viewModel::addDiaryEntry,
             modifier = modifier
         )
     }
@@ -55,7 +55,7 @@ fun DiaryEntryScreen(modifier: Modifier = Modifier, viewModel: DiaryEntriesViewM
 @Composable
 internal fun DiaryEntryScreen(
     items: List<DiaryEntry>,
-    onSave: (diaryEntry: DiaryEntry) -> Unit,
+    // onSave: (diaryEntry: DiaryEntry) -> Unit,
     modifier: Modifier = Modifier
 ) {
     Column(modifier) {
@@ -86,7 +86,7 @@ internal fun DiaryEntryScreen(
 @Composable
 private fun DefaultPreview() {
     MyApplicationTheme {
-        DiaryEntryScreen(fakeDiaryEntrys, onSave = {})
+        DiaryEntryScreen(fakeDiaryEntrys)
     }
 }
 
@@ -94,6 +94,6 @@ private fun DefaultPreview() {
 @Composable
 private fun PortraitPreview() {
     MyApplicationTheme {
-        DiaryEntryScreen(fakeDiaryEntrys, onSave = {})
+        DiaryEntryScreen(fakeDiaryEntrys)
     }
 }
