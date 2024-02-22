@@ -17,5 +17,5 @@
 <resources>
     <string name="app_name">HappyDay</string>
     <string name="save_action">save</string>
-    <string name="diary_entry_formyself">What have I done for myself?</string>
+    <string name="diary_entry_for_myself">What have I done for myself?</string>
 </resources>

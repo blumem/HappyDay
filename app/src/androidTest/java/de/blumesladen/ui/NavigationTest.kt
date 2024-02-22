@@ -20,9 +20,9 @@ import androidx.compose.ui.test.junit4.createAndroidComposeRule
 import androidx.compose.ui.test.onNodeWithText
 import dagger.hilt.android.testing.HiltAndroidRule
 import dagger.hilt.android.testing.HiltAndroidTest
+import de.blumesladen.data.di.fakeDiaryEntrys
 import org.junit.Rule
 import org.junit.Test
-import de.blumesladen.data.di.fakeDiaryEntrys
 
 @HiltAndroidTest
 class NavigationTest {
@@ -37,7 +37,7 @@ class NavigationTest {
     fun test1() {
         // TODO: Add navigation tests
         // TODO: remove first().toString() and update the test to work with DiaryEntry objects
-        composeTestRule.onNodeWithText(fakeDiaryEntrys.first().toString(), substring = true).assertExists()
+        composeTestRule.onNodeWithText(fakeDiaryEntrys.first().forMyself.toString(), substring = true).assertExists()
     }
 }
 

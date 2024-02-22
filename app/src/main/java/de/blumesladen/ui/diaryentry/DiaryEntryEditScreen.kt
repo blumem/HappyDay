@@ -38,7 +38,7 @@ fun DiaryEntryEditScreen(modifier: Modifier = Modifier, viewModel: DiaryEntryVie
 }
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
-private fun DiaryEntryEditDialog(
+fun DiaryEntryEditDialog(
     entry : DiaryEntryUiState,
     onSave : (diaryEntry: DiaryEntry) -> Unit,
     // onValueChange: (DiaryEntry) -> Unit,
@@ -52,7 +52,7 @@ private fun DiaryEntryEditDialog(
         OutlinedTextField(
             value = entry.diaryEntry.forMyself,
             onValueChange = { entry.diaryEntry = entry.diaryEntry.copy(forMyself = it) },
-            label = { Text(stringResource(R.string.diary_entry_formyself)) },
+            label = { Text(stringResource(R.string.diary_entry_for_myself)) },
             colors = OutlinedTextFieldDefaults.colors(
                 focusedContainerColor = MaterialTheme.colorScheme.secondaryContainer,
                 unfocusedContainerColor = MaterialTheme.colorScheme.secondaryContainer,
@@ -85,7 +85,7 @@ fun DiaryEntryEditScreenPreview() {
 
 
 @SuppressLint("NewApi")
-val fakeDiaryEntry : DiaryEntryUiState = DiaryEntryUiState(DiaryEntry(0,
+private val fakeDiaryEntry : DiaryEntryUiState = DiaryEntryUiState(DiaryEntry(0,
     LocalDateTime.now(),
     0,
     0,

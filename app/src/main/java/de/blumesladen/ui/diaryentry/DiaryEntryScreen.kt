@@ -75,7 +75,7 @@ internal fun DiaryEntryScreen(
             }
         }
         items.forEach {
-            Text("Saved item: $it")
+            Text("${it.forMyself}")
         }
     }
 }
