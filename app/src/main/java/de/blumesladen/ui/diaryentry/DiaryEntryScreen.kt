@@ -38,13 +38,14 @@ import androidx.hilt.navigation.compose.hiltViewModel
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import de.blumesladen.data.di.fakeDiaryEntrys
 import de.blumesladen.data.local.database.DiaryEntry
+import de.blumesladen.ui.diaryentry.DiaryEntriesUiState.*
 
 @Composable
-fun DiaryEntryScreen(modifier: Modifier = Modifier, viewModel: DiaryEntryViewModel = hiltViewModel()) {
+fun DiaryEntryScreen(modifier: Modifier = Modifier, viewModel: DiaryEntriesViewModel = hiltViewModel()) {
     val items by viewModel.uiState.collectAsStateWithLifecycle()
-    if (items is DiaryEntryUiState.Success) {
+    if (items is DiaryEntriesUiState.Success) {
         DiaryEntryScreen(
-            items = (items as DiaryEntryUiState.Success).data,
+            items = (items as Success).data,
             onSave = viewModel::addDiaryEntry,
             modifier = modifier
         )

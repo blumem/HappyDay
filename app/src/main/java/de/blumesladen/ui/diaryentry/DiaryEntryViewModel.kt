@@ -16,8 +16,10 @@
 
 package de.blumesladen.ui.diaryentry
 
+import android.annotation.SuppressLint
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
+import androidx.room.ColumnInfo
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.flow.SharingStarted
 import kotlinx.coroutines.flow.StateFlow
@@ -27,9 +29,12 @@ import kotlinx.coroutines.flow.stateIn
 import kotlinx.coroutines.launch
 import de.blumesladen.data.DiaryEntryRepository
 import de.blumesladen.data.local.database.DiaryEntry
-import de.blumesladen.ui.diaryentry.DiaryEntryUiState.Error
-import de.blumesladen.ui.diaryentry.DiaryEntryUiState.Loading
-import de.blumesladen.ui.diaryentry.DiaryEntryUiState.Success
+import de.blumesladen.ui.diaryentry.DiaryEntriesUiState.Error
+import de.blumesladen.ui.diaryentry.DiaryEntriesUiState.Loading
+import de.blumesladen.ui.diaryentry.DiaryEntriesUiState.Success
+import kotlinx.coroutines.flow.MutableStateFlow
+import kotlinx.coroutines.flow.asStateFlow
+import java.time.LocalDateTime
 import javax.inject.Inject
 
 @HiltViewModel
@@ -37,8 +42,38 @@ class DiaryEntryViewModel @Inject constructor(
     private val diaryEntryRepository: DiaryEntryRepository
 ) : ViewModel() {
 
-    val uiState: StateFlow<DiaryEntryUiState> = diaryEntryRepository
-        .diaryEntrys.map<List<DiaryEntry>, DiaryEntryUiState>(::Success)
+    // Backing property to avoid state updates from other classes
+    private var _uiState = MutableStateFlow(DiaryEntryUiState(DiaryEntry()))
+    val uiState: StateFlow<DiaryEntryUiState>  = _uiState.asStateFlow()
+
+    /**
+     * Updates the [itemUiState] with the value provided in the argument. This method also triggers
+     * a validation for input values.
+     */
+    fun updateUiState(diaryEntry: DiaryEntryUiState) {
+       _uiState = MutableStateFlow(diaryEntry)
+    }
+
+    fun addDiaryEntry(diaryEntry: DiaryEntry) {
+        viewModelScope.launch {
+            diaryEntryRepository.add(diaryEntry)
+        }
+    }
+}
+
+@SuppressLint("NewApi")
+data class DiaryEntryUiState (
+    var diaryEntry: DiaryEntry
+) { }
+
+
+@HiltViewModel
+class DiaryEntriesViewModel @Inject constructor(
+    private val diaryEntryRepository: DiaryEntryRepository
+) : ViewModel() {
+
+    val uiState: StateFlow<DiaryEntriesUiState> = diaryEntryRepository
+        .diaryEntrys.map<List<DiaryEntry>, DiaryEntriesUiState>(::Success)
         .catch { emit(Error(it)) }
         .stateIn(viewModelScope, SharingStarted.WhileSubscribed(5000), Loading)
 
@@ -49,8 +84,8 @@ class DiaryEntryViewModel @Inject constructor(
     }
 }
 
-sealed interface DiaryEntryUiState {
-    object Loading : DiaryEntryUiState
-    data class Error(val throwable: Throwable) : DiaryEntryUiState
-    data class Success(val data: List<DiaryEntry>) : DiaryEntryUiState
+sealed interface DiaryEntriesUiState {
+    object Loading : DiaryEntriesUiState
+    data class Error(val throwable: Throwable) : DiaryEntriesUiState
+    data class Success(val data: List<DiaryEntry>) : DiaryEntriesUiState
 }
