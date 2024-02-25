@@ -8,10 +8,8 @@ import androidx.compose.ui.test.assertIsEnabled
 import androidx.compose.ui.test.assertTextEquals
 import androidx.compose.ui.test.junit4.createAndroidComposeRule
 import androidx.compose.ui.test.onNodeWithText
-import androidx.compose.ui.test.onRoot
 import androidx.compose.ui.test.performClick
 import androidx.compose.ui.test.performTextInput
-import androidx.compose.ui.test.printToLog
 import androidx.test.ext.junit.runners.AndroidJUnit4
 import dagger.hilt.android.testing.BindValue
 import dagger.hilt.android.testing.HiltAndroidRule
@@ -49,31 +47,51 @@ class DiaryEntryEditScreenTest {
         }
     }
 
-    @Test
-    fun diaryEntryEditScreen_enter_value_for_myself() {
-        composeTestRule.onRoot().printToLog("TAG")
-        val labelString = composeTestRule.activity.getString(R.string.diary_entry_for_myself)
-        val resultText = "result"
-        val element = composeTestRule.onNodeWithText(labelString) // .onNodeWithContentDescription("textFieldContentDescription")
-        // composeTestRule.awaitIdle()
+    /**
+     * Helper function to automate the boilerplate
+     */
+    fun helper_test_input_into_text_input_field_with_label(label : String, testInputText : String) {
+        val element = composeTestRule.onNodeWithText(label) // .onNodeWithContentDescription("textFieldContentDescription")
         element.assertIsEnabled()
         element.performClick()
-        element.performTextInput(resultText)
+        element.performTextInput(testInputText)
         composeTestRule.waitForIdle() // Advances the clock until Compose is idle
-        element.assertTextEquals(labelString, resultText, includeEditableText = true)
+        element.assertTextEquals(label, testInputText, includeEditableText = true)
+    }
+
+    @Test
+    fun diaryEntryEditScreen_enter_value_for_myself() {
+        val labelString = composeTestRule.activity.getString(R.string.diary_entry_for_myself)
+        val resultText = "result"
+        helper_test_input_into_text_input_field_with_label(labelString, resultText)
     }
 
     @Test
     fun diaryEntryEditScreen_enter_value_for_others() {
         val labelString = composeTestRule.activity.getString(R.string.diary_entry_for_others)
         val resultText = "result"
-        val element = composeTestRule.onNodeWithText(labelString) // .onNodeWithContentDescription("textFieldContentDescription")
-        // composeTestRule.awaitIdle()
-        element.assertIsEnabled()
-        element.performClick()
-        element.performTextInput(resultText)
-        composeTestRule.waitForIdle() // Advances the clock until Compose is idle
-        element.assertTextEquals(labelString, resultText, includeEditableText = true)
+        helper_test_input_into_text_input_field_with_label(labelString, resultText)
+    }
+
+    @Test
+    fun diaryEntryEditScreen_enter_value_unexpressed_emotion() {
+        val labelString = composeTestRule.activity.getString(R.string.diary_entry_unexpressed_emotions)
+        val resultText = "result"
+        helper_test_input_into_text_input_field_with_label(labelString, resultText)
+    }
+
+    @Test
+    fun diaryEntryEditScreen_enter_value_something_good() {
+        val labelString = composeTestRule.activity.getString(R.string.diary_entry_something_good)
+        val resultText = "result"
+        helper_test_input_into_text_input_field_with_label(labelString, resultText)
+    }
+
+    @Test
+    fun diaryEntryEditScreen_enter_value_anticipation() {
+        val labelString = composeTestRule.activity.getString(R.string.diary_entry_anticipation)
+        val resultText = "result"
+        helper_test_input_into_text_input_field_with_label(labelString, resultText)
     }
 
 }

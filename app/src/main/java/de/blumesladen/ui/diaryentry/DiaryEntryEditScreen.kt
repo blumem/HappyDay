@@ -87,6 +87,45 @@ fun DiaryEntryEditDialog(
             enabled = true,
             singleLine = true
         )
+        OutlinedTextField(
+            value = details.unexpressedEmotions ?: "",
+            onValueChange = { onValueChange(details.copy(unexpressedEmotions = it)) },
+            label = { Text(stringResource(R.string.diary_entry_unexpressed_emotions)) },
+            colors = OutlinedTextFieldDefaults.colors(
+                focusedContainerColor = MaterialTheme.colorScheme.secondaryContainer,
+                unfocusedContainerColor = MaterialTheme.colorScheme.secondaryContainer,
+                disabledContainerColor = MaterialTheme.colorScheme.secondaryContainer,
+            ),
+            modifier = Modifier.fillMaxWidth(),
+            enabled = true,
+            singleLine = true
+        )
+        OutlinedTextField(
+            value = details.somethingGood?: "",
+            onValueChange = { onValueChange(details.copy(somethingGood = it)) },
+            label = { Text(stringResource(R.string.diary_entry_something_good)) },
+            colors = OutlinedTextFieldDefaults.colors(
+                focusedContainerColor = MaterialTheme.colorScheme.secondaryContainer,
+                unfocusedContainerColor = MaterialTheme.colorScheme.secondaryContainer,
+                disabledContainerColor = MaterialTheme.colorScheme.secondaryContainer,
+            ),
+            modifier = Modifier.fillMaxWidth(),
+            enabled = true,
+            singleLine = true
+        )
+        OutlinedTextField(
+            value = details.anticipation?: "",
+            onValueChange = { onValueChange(details.copy(anticipation = it)) },
+            label = { Text(stringResource(R.string.diary_entry_anticipation)) },
+            colors = OutlinedTextFieldDefaults.colors(
+                focusedContainerColor = MaterialTheme.colorScheme.secondaryContainer,
+                unfocusedContainerColor = MaterialTheme.colorScheme.secondaryContainer,
+                disabledContainerColor = MaterialTheme.colorScheme.secondaryContainer,
+            ),
+            modifier = Modifier.fillMaxWidth(),
+            enabled = true,
+            singleLine = true
+        )
     }
 
 }

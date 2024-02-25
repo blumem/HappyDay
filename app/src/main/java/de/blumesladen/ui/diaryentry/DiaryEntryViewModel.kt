@@ -67,19 +67,28 @@ data class DiaryEntryDetails(
     val id: Int =0,
     val forMyself: String = "",
     val forOthers: String = "",
+    val unexpressedEmotions: String? = "",
+    val somethingGood: String? = "",
+    val anticipation: String? = ""
 )
 
 fun DiaryEntryDetails.toDiaryEntry(): DiaryEntry = DiaryEntry(
     uid = id,
     forMyself = forMyself,
-    forOthers = forOthers)
+    forOthers = forOthers,
+    unexpressedEmotions = unexpressedEmotions,
+    somethingGood = somethingGood,
+    anticipation = anticipation)
 
 fun DiaryEntry.toDiaryEntryUiState() : DiaryEntryUiState = DiaryEntryUiState(this.toDiaryEntryDetails())
 
 fun DiaryEntry.toDiaryEntryDetails(): DiaryEntryDetails = DiaryEntryDetails(
     id = uid,
     forMyself = forMyself,
-    forOthers = forOthers
+    forOthers = forOthers,
+    unexpressedEmotions = unexpressedEmotions,
+    somethingGood = somethingGood,
+    anticipation = anticipation
 )
 @HiltViewModel
 class DiaryEntriesViewModel @Inject constructor(

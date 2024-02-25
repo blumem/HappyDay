@@ -30,6 +30,8 @@ import org.junit.Test
 
 // try:
 // https://medium.com/huawei-developers/how-to-test-the-navigation-component-in-jetpack-compose-1ab4ccaba761
+// https://medium.com/jetpack-composers/testing-compose-navigation-component-modifier-testtag-is-your-friend-f72088b5fc22
+
 @HiltAndroidTest
 class NavigationTest {
 
