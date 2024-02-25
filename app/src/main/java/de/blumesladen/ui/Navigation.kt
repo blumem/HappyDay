@@ -23,6 +23,7 @@ import androidx.compose.ui.unit.dp
 import androidx.navigation.compose.NavHost
 import androidx.navigation.compose.composable
 import androidx.navigation.compose.rememberNavController
+import de.blumesladen.ui.diaryentry.DiaryEntryEditScreen
 import de.blumesladen.ui.diaryentry.DiaryEntryScreen
 
 @Composable
@@ -30,7 +31,10 @@ fun MainNavigation() {
     val navController = rememberNavController()
 
     NavHost(navController = navController, startDestination = "main") {
-        composable("main") { DiaryEntryScreen(modifier = Modifier.padding(16.dp)) }
+        composable("main") {
+            DiaryEntryEditScreen(modifier = Modifier.padding(16.dp))
+        }
         // TODO: Add more destinations
+        composable("view") { DiaryEntryScreen(modifier = Modifier.padding(16.dp)) }
     }
 }

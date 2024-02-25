@@ -14,6 +14,9 @@
  * limitations under the License.
  */
 
+// Version compativility for Kotlin Gradle Plugin vs Gradle vs AGP:
+// https://kotlinlang.org/docs/gradle-configure-project.html#apply-the-plugin
+
 @Suppress("DSL_SCOPE_VIOLATION") // Remove when fixed https://youtrack.jetbrains.com/issue/KTIJ-19369
 plugins {
     alias(libs.plugins.android.application)
@@ -81,6 +84,7 @@ android {
 }
 
 dependencies {
+    implementation(libs.androidx.navigation.testing)
     val composeBom = platform(libs.androidx.compose.bom)
     implementation(composeBom)
     androidTestImplementation(composeBom)
@@ -117,6 +121,7 @@ dependencies {
     // Instrumented tests
     androidTestImplementation(libs.androidx.compose.ui.test.junit4)
     debugImplementation(libs.androidx.compose.ui.test.manifest)
+
 
     // Local tests: jUnit, coroutines, Android runner
     testImplementation(libs.junit)

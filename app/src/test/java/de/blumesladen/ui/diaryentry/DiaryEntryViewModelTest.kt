@@ -54,7 +54,7 @@ private class FakeDiaryEntryRepository : DiaryEntryRepository {
     override val diaryEntrys: Flow<List<DiaryEntry>>
         get() = flow { emit(data.toList()) }
 
-    override suspend fun add(entry: DiaryEntry) {
-        data.add(0, entry)
+    override suspend fun add(diaryEntry: DiaryEntry) {
+        data.add(0, diaryEntry)
     }
 }

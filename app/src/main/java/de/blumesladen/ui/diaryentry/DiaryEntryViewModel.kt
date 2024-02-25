@@ -16,7 +16,9 @@
 
 package de.blumesladen.ui.diaryentry
 
-import android.annotation.SuppressLint
+import androidx.compose.runtime.getValue
+import androidx.compose.runtime.mutableStateOf
+import androidx.compose.runtime.setValue
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import dagger.hilt.android.lifecycle.HiltViewModel
@@ -25,10 +27,8 @@ import de.blumesladen.data.local.database.DiaryEntry
 import de.blumesladen.ui.diaryentry.DiaryEntriesUiState.Error
 import de.blumesladen.ui.diaryentry.DiaryEntriesUiState.Loading
 import de.blumesladen.ui.diaryentry.DiaryEntriesUiState.Success
-import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.SharingStarted
 import kotlinx.coroutines.flow.StateFlow
-import kotlinx.coroutines.flow.asStateFlow
 import kotlinx.coroutines.flow.catch
 import kotlinx.coroutines.flow.map
 import kotlinx.coroutines.flow.stateIn
@@ -41,16 +41,15 @@ class DiaryEntryViewModel @Inject constructor(
 ) : ViewModel() {
 
     // Backing property to avoid state updates from other classes
-    @SuppressLint("NewApi")
-    private var _uiState = MutableStateFlow(DiaryEntryUiState(DiaryEntry()))
-    val uiState: StateFlow<DiaryEntryUiState>  = _uiState.asStateFlow()
+    var uiState by mutableStateOf(DiaryEntryUiState())
+        private set
 
     /**
      * Updates the [DiaryEntryUiState] with the value provided in the argument. This method also triggers
      * a validation for input values.
      */
-    fun updateUiState(diaryEntry: DiaryEntryUiState) {
-       _uiState = MutableStateFlow(diaryEntry)
+    fun updateUiState(diaryEntryDetails : DiaryEntryDetails) {
+       uiState = DiaryEntryUiState(diaryEntryDetails)
     }
 
     fun addDiaryEntry(diaryEntry: DiaryEntry) {
@@ -60,12 +59,28 @@ class DiaryEntryViewModel @Inject constructor(
     }
 }
 
-@SuppressLint("NewApi")
 data class DiaryEntryUiState (
-    var diaryEntry: DiaryEntry
+    val diaryEntryDetails: DiaryEntryDetails = DiaryEntryDetails()
 )
 
+data class DiaryEntryDetails(
+    val id: Int =0,
+    val forMyself: String = "",
+    val forOthers: String = "",
+)
 
+fun DiaryEntryDetails.toDiaryEntry(): DiaryEntry = DiaryEntry(
+    uid = id,
+    forMyself = forMyself,
+    forOthers = forOthers)
+
+fun DiaryEntry.toDiaryEntryUiState() : DiaryEntryUiState = DiaryEntryUiState(this.toDiaryEntryDetails())
+
+fun DiaryEntry.toDiaryEntryDetails(): DiaryEntryDetails = DiaryEntryDetails(
+    id = uid,
+    forMyself = forMyself,
+    forOthers = forOthers
+)
 @HiltViewModel
 class DiaryEntriesViewModel @Inject constructor(
     private val diaryEntryRepository: DiaryEntryRepository

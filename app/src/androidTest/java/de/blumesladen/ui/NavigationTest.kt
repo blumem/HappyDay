@@ -16,11 +16,15 @@
 
 package de.blumesladen.ui
 
+import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.test.junit4.createAndroidComposeRule
 import androidx.compose.ui.test.onNodeWithText
+import androidx.navigation.compose.ComposeNavigator
+import androidx.navigation.testing.TestNavHostController
 import dagger.hilt.android.testing.HiltAndroidRule
 import dagger.hilt.android.testing.HiltAndroidTest
 import de.blumesladen.data.di.fakeDiaryEntrys
+import org.junit.Before
 import org.junit.Rule
 import org.junit.Test
 
@@ -33,9 +37,23 @@ class NavigationTest {
     @get:Rule(order = 1)
     val composeTestRule = createAndroidComposeRule<MainActivity>()
 
+    lateinit var navController: TestNavHostController
+
+    // @OptIn(ExperimentalMaterialNavigationApi::class)
+    @Before
+    fun setupAppNavHost() {
+        hiltRule.inject()
+
+        composeTestRule.setContent {
+            navController = TestNavHostController(LocalContext.current)
+            navController.navigatorProvider.addNavigator(ComposeNavigator())
+            // AppNavHost(navController = navController)
+        }
+    }
     @Test
     fun test1() {
         // TODO: Add navigation tests
+        navController.navigate("view")
         // TODO: remove first().toString() and update the test to work with DiaryEntry objects
         composeTestRule.onNodeWithText(fakeDiaryEntrys.first().forMyself.toString(), substring = true).assertExists()
     }

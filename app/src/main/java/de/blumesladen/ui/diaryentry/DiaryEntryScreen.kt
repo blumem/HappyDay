@@ -31,10 +31,12 @@ import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
 import androidx.compose.runtime.setValue
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.hilt.navigation.compose.hiltViewModel
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
+import de.blumesladen.R
 import de.blumesladen.data.di.fakeDiaryEntrys
 import de.blumesladen.data.local.database.DiaryEntry
 import de.blumesladen.ui.diaryentry.DiaryEntriesUiState.Success
@@ -61,7 +63,9 @@ internal fun DiaryEntryScreen(
     Column(modifier) {
         var nameDiaryEntry by remember { mutableStateOf("Compose") }
         Row(
-            modifier = Modifier.fillMaxWidth().padding(bottom = 24.dp),
+            modifier = Modifier
+                .fillMaxWidth()
+                .padding(bottom = 24.dp),
             horizontalArrangement = Arrangement.spacedBy(16.dp)
         ) {
             TextField(
@@ -71,7 +75,7 @@ internal fun DiaryEntryScreen(
 
             /* @TODO(mblume) to implement onSave(null) to onSave(diaryEntry) */
             Button(modifier = Modifier.width(96.dp), onClick = { /* to be implemented */ }) {
-                Text("Save")
+                Text(stringResource(id = R.string.save_action))
             }
         }
         items.forEach {

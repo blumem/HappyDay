@@ -16,8 +16,6 @@
 
 package de.blumesladen.data.local.database
 
-import android.os.Build
-import androidx.annotation.RequiresApi
 import androidx.room.ColumnInfo
 import androidx.room.Dao
 import androidx.room.Entity
@@ -28,10 +26,9 @@ import androidx.room.TypeConverter
 import kotlinx.coroutines.flow.Flow
 import java.time.LocalDateTime
 import java.time.format.DateTimeFormatter
-import java.util.*
 
 @Entity
-data class DiaryEntry @RequiresApi(Build.VERSION_CODES.O) constructor(
+data class DiaryEntry constructor(
     @PrimaryKey(autoGenerate = true)
     @ColumnInfo(name = "uid")
     val uid: Int = 0,
@@ -54,7 +51,6 @@ data class DiaryEntry @RequiresApi(Build.VERSION_CODES.O) constructor(
     val anticipation: String? = null
 ) {
     val entryDateFormatted : String
-        @RequiresApi(Build.VERSION_CODES.O)
         get() = entryDate.format(DateTimeFormatter.ofPattern("yyyy/MM/dd"))
 }
 
