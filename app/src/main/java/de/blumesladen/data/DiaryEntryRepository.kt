@@ -16,12 +16,9 @@
 
 package de.blumesladen.data
 
-import android.os.Build
-import androidx.annotation.RequiresApi
-import kotlinx.coroutines.flow.Flow
-import kotlinx.coroutines.flow.map
 import de.blumesladen.data.local.database.DiaryEntry
 import de.blumesladen.data.local.database.DiaryEntryDao
+import kotlinx.coroutines.flow.Flow
 import javax.inject.Inject
 
 interface DiaryEntryRepository {
