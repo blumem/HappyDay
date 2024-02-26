@@ -21,6 +21,7 @@ import androidx.compose.ui.test.onNodeWithText
 import androidx.navigation.compose.ComposeNavigator
 import androidx.navigation.testing.TestNavHostController
 import androidx.test.core.app.ApplicationProvider
+import androidx.test.filters.MediumTest
 import dagger.hilt.android.testing.HiltAndroidRule
 import dagger.hilt.android.testing.HiltAndroidTest
 import org.junit.Before
@@ -33,6 +34,7 @@ import org.junit.Test
 // https://medium.com/jetpack-composers/testing-compose-navigation-component-modifier-testtag-is-your-friend-f72088b5fc22
 
 @HiltAndroidTest
+@MediumTest
 class NavigationTest {
 
     @get:Rule(order = 0)

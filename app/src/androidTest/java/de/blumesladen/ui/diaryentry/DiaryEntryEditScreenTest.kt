@@ -11,6 +11,7 @@ import androidx.compose.ui.test.onNodeWithText
 import androidx.compose.ui.test.performClick
 import androidx.compose.ui.test.performTextInput
 import androidx.test.ext.junit.runners.AndroidJUnit4
+import androidx.test.filters.MediumTest
 import dagger.hilt.android.testing.BindValue
 import dagger.hilt.android.testing.HiltAndroidRule
 import dagger.hilt.android.testing.HiltAndroidTest
@@ -23,6 +24,7 @@ import org.junit.runner.RunWith
 
 @HiltAndroidTest
 @RunWith(AndroidJUnit4::class)
+@MediumTest
 class DiaryEntryEditScreenTest {
     var uiState by mutableStateOf(DiaryEntryUiState(DiaryEntryDetails()))
 
@@ -43,7 +45,7 @@ class DiaryEntryEditScreenTest {
     fun setup() {
         hiltRule.inject()
         composeTestRule.setContent {
-            DiaryEntryEditDialog(uiState, onValueChange = this::updateUIState )
+            DiaryEntryEditInputFields(uiState, onValueChange = this::updateUIState )
         }
     }
 

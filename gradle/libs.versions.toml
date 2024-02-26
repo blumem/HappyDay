@@ -1,5 +1,5 @@
 [versions]
-androidGradlePlugin = "8.2.2"
+androidGradlePlugin = "8.3.0-rc02"
 androidxCore = "1.12.0"
 androidxLifecycle = "2.7.0"
 androidxActivity = "1.8.2"
@@ -17,6 +17,7 @@ junit = "4.13.2"
 kotlin = "1.9.22"
 ksp = "1.9.22-1.0.17"
 navigationTesting = "2.7.7"
+turbine = "1.0.0"
 
 [libraries]
 androidx-core-ktx = { module = "androidx.core:core-ktx", version.ref = "androidxCore" }
@@ -47,6 +48,7 @@ hilt-gradle-plugin = { module = "com.google.dagger:hilt-android-gradle-plugin", 
 junit = { module = "junit:junit", version.ref = "junit" }
 kotlinx-coroutines-test = { module = "org.jetbrains.kotlinx:kotlinx-coroutines-test", version.ref = "coroutines" }
 androidx-navigation-testing = { group = "androidx.navigation", name = "navigation-testing", version.ref = "navigationTesting" }
+turbine = { group = "app.cash.turbine", name = "turbine", version.ref = "turbine" }
 
 [plugins]
 android-application = { id = "com.android.application", version.ref = "androidGradlePlugin" }

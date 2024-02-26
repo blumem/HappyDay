@@ -4,9 +4,11 @@ package de.blumesladen.ui.diaryentry
 import android.annotation.SuppressLint
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column
+import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.padding
 import androidx.compose.material3.Button
+import androidx.compose.material3.ExperimentalMaterial3Api
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.OutlinedTextField
 import androidx.compose.material3.OutlinedTextFieldDefaults
@@ -23,34 +25,50 @@ import de.blumesladen.R
 import de.blumesladen.ui.theme.MyApplicationTheme
 import kotlinx.coroutines.launch
 
+@OptIn(ExperimentalMaterial3Api::class)
+
 @Composable
-fun DiaryEntryEditScreen(modifier: Modifier = Modifier, viewModel: DiaryEntryViewModel = hiltViewModel()) {
+fun DiaryEntryEditDialog(modifier: Modifier = Modifier, viewModel: DiaryEntryViewModel = hiltViewModel()) {
     val coroutineScope = rememberCoroutineScope()
 
     Column (
         verticalArrangement = Arrangement.spacedBy(dimensionResource(id = R.dimen.padding_large)),
         modifier = modifier.padding(dimensionResource(id = R.dimen.padding_medium))
     ) {
-        DiaryEntryEditDialog(
+        DiaryEntryEditInputFields(
             entry = viewModel.uiState,
             onValueChange = viewModel::updateUiState,
             modifier = modifier.fillMaxWidth()
         )
-        Button(
-            onClick = {  coroutineScope.launch {
-                viewModel.addDiaryEntry(viewModel.uiState.diaryEntryDetails.toDiaryEntry())
-                //navigateBack()
-            }},
-            enabled = true,
-            shape = MaterialTheme.shapes.small,
-            modifier = Modifier.fillMaxWidth()
+        Row(
+            modifier = modifier.padding(dimensionResource(id = R.dimen.padding_large))
         ) {
-            Text(text = stringResource(R.string.save_action))
+            Button(
+                onClick = {  coroutineScope.launch {
+                    viewModel.addDiaryEntry(viewModel.uiState.diaryEntryDetails.toDiaryEntry())
+                    //navigateBack()
+                }},
+                enabled = true,
+                shape = MaterialTheme.shapes.small,
+                modifier = Modifier.fillMaxWidth()
+            ) {
+                Text(text = stringResource(R.string.save_action))
+            }
+            Button(
+                onClick = {
+                          // navigateBack()
+                },
+                enabled = true,
+                shape = MaterialTheme.shapes.small,
+                modifier = Modifier.fillMaxWidth()
+            ) {
+                Text(text = stringResource(R.string.cancel_action))
+            }
         }
     }
 }
 @Composable
-fun DiaryEntryEditDialog(
+fun DiaryEntryEditInputFields(
     entry : DiaryEntryUiState,
     onValueChange: (DiaryEntryDetails) -> Unit,
     modifier: Modifier = Modifier
@@ -70,7 +88,9 @@ fun DiaryEntryEditDialog(
                 unfocusedContainerColor = MaterialTheme.colorScheme.secondaryContainer,
                 disabledContainerColor = MaterialTheme.colorScheme.secondaryContainer,
             ),
-            modifier = Modifier.fillMaxWidth().testTag("TEST_TAG"),
+            modifier = Modifier
+                .fillMaxWidth()
+                .testTag("TEST_TAG"),
             enabled = true,
             singleLine = true
         )
@@ -135,7 +155,7 @@ fun DiaryEntryEditDialog(
 @Composable
 fun DiaryEntryEditScreenPreview() {
     MyApplicationTheme {
-        DiaryEntryEditDialog(entry = fakeDiaryUiState, onValueChange = {})
+        DiaryEntryEditInputFields(entry = fakeDiaryUiState, onValueChange = {})
     }
 }
 
