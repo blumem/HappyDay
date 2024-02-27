@@ -7,6 +7,7 @@ import androidx.compose.runtime.setValue
 import androidx.compose.ui.test.assertIsEnabled
 import androidx.compose.ui.test.assertTextEquals
 import androidx.compose.ui.test.junit4.createAndroidComposeRule
+import androidx.compose.ui.test.onNodeWithContentDescription
 import androidx.compose.ui.test.onNodeWithText
 import androidx.compose.ui.test.performClick
 import androidx.compose.ui.test.performTextInput
@@ -21,6 +22,8 @@ import org.junit.Before
 import org.junit.Rule
 import org.junit.Test
 import org.junit.runner.RunWith
+import java.text.SimpleDateFormat
+import java.util.Calendar
 
 @HiltAndroidTest
 @RunWith(AndroidJUnit4::class)
@@ -59,6 +62,58 @@ class DiaryEntryEditScreenTest {
         element.performTextInput(testInputText)
         composeTestRule.waitForIdle() // Advances the clock until Compose is idle
         element.assertTextEquals(label, testInputText, includeEditableText = true)
+    }
+
+    @Test
+    fun diaryEntryEditScreen_enter_value_entry_date() {
+        val labelString = composeTestRule.activity.getString(R.string.diary_entry_for_myself)
+        val resultText = "2024-02-26"
+        helper_test_input_into_text_input_field_with_label(labelString, resultText)
+    }
+
+    @Test
+    fun diaryEntryEditScreen_clicking_calendar_month_button_opens_dialog() {
+        val labelString = composeTestRule.activity.getString(R.string.calendar_button_content_description)
+        val canceltring = composeTestRule.activity.getString(R.string.cancel_action)
+        val element = composeTestRule.onNodeWithContentDescription(labelString)
+
+        element.assertIsEnabled()
+        element.performClick()
+        composeTestRule.waitForIdle() // the dialog to open.
+        composeTestRule.onNodeWithText("Selected date").assertExists("Date Picker Dialog didn't open")
+        composeTestRule.onNodeWithText(canceltring).performClick()
+        composeTestRule.waitForIdle() // the dialog to close
+        composeTestRule.onNodeWithText("Selected date").assertDoesNotExist()
+    }
+
+    @Test
+    fun diaryEntryEditScreen_clicking_calendar_month_in_dialog() {
+        val labelString = composeTestRule.activity.getString(R.string.calendar_button_content_description)
+        val okString = composeTestRule.activity.getString(R.string.ok_action)
+        val cal: Calendar = Calendar.getInstance()
+        val today = SimpleDateFormat("yyyy-MM-dd").format(cal.getTime())
+        cal.add(Calendar.DATE, -1)
+        // format like DatePickerDialog uses internally
+        val yesterdayDatePicker = SimpleDateFormat("EEEE, MMMM dd, yyyy").format(cal.getTime())
+        // format how the input field is using it
+        val yesterdayInput = SimpleDateFormat("yyyy-MM-dd").format(cal.getTime())
+        // open the dialog
+        composeTestRule.onNodeWithContentDescription(labelString).performClick()
+        // wait for it to be drawn
+        composeTestRule.waitForIdle()
+        // click on another date:
+        if (today.substring(0,6).equals(yesterdayDatePicker.substring(0,6))) {
+            composeTestRule.onNodeWithText(yesterdayDatePicker, useUnmergedTree = true).performClick()
+            composeTestRule.onNodeWithText(okString).performClick()
+            composeTestRule.waitForIdle()
+            composeTestRule.onNodeWithText("Date:")
+                .assertTextEquals("Date:", yesterdayInput, includeEditableText = true)
+        } else {
+            // TODO test if yday is the first of the month (which means we have to click once "<" at the top)
+            // https://stackoverflow.com/questions/77111152/jetpack-compose-ui-test-with-material3-datepickerdialog
+            // we have to use ContentDescription for that.
+            // DatePickerSwitchToPreviousMonth
+        }
     }
 
     @Test

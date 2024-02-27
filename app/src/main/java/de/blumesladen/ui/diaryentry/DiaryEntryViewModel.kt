@@ -33,6 +33,7 @@ import kotlinx.coroutines.flow.catch
 import kotlinx.coroutines.flow.map
 import kotlinx.coroutines.flow.stateIn
 import kotlinx.coroutines.launch
+import java.time.LocalDate
 import javax.inject.Inject
 
 @HiltViewModel
@@ -65,6 +66,7 @@ data class DiaryEntryUiState (
 
 data class DiaryEntryDetails(
     val id: Int =0,
+    val entryDate: LocalDate = LocalDate.now(),
     val forMyself: String = "",
     val forOthers: String = "",
     val unexpressedEmotions: String? = "",
@@ -74,6 +76,7 @@ data class DiaryEntryDetails(
 
 fun DiaryEntryDetails.toDiaryEntry(): DiaryEntry = DiaryEntry(
     uid = id,
+    entryDate = entryDate,
     forMyself = forMyself,
     forOthers = forOthers,
     unexpressedEmotions = unexpressedEmotions,
@@ -84,6 +87,7 @@ fun DiaryEntry.toDiaryEntryUiState() : DiaryEntryUiState = DiaryEntryUiState(thi
 
 fun DiaryEntry.toDiaryEntryDetails(): DiaryEntryDetails = DiaryEntryDetails(
     id = uid,
+    entryDate = entryDate,
     forMyself = forMyself,
     forOthers = forOthers,
     unexpressedEmotions = unexpressedEmotions,

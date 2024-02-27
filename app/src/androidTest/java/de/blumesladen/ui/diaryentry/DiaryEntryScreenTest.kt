@@ -27,7 +27,7 @@ import org.junit.Before
 import org.junit.Rule
 import org.junit.Test
 import org.junit.runner.RunWith
-import java.time.LocalDateTime
+import java.time.LocalDate
 
 /**
  * UI tests for [DiaryEntryScreen].
@@ -55,7 +55,7 @@ private val FAKE_DATA = listOf("bike tour", "small walk", "Yoga")
 
 @SuppressLint("NewApi")
 private val FAKE_DATA_ENTRIES = listOf(
-    DiaryEntry(0, LocalDateTime.now(),1,1, forMyself = FAKE_DATA.get(0),"made cashier smile","frustration","cookies"),
-    DiaryEntry(1, LocalDateTime.of(2024,1,1,0,0,0,0),1,1,forMyself = FAKE_DATA.get(1),"brought cookies to ping pong","anger",""),
-    DiaryEntry(2, LocalDateTime.of(2024,1,2,0,0,0,0),1,1,forMyself = FAKE_DATA.get(2),"cleaned the floor","honry","")
+    DiaryEntry(0, LocalDate.now(),1,1, forMyself = FAKE_DATA.get(0),"made cashier smile","frustration","cookies"),
+    DiaryEntry(1, LocalDate.of(2024,1,1),1,1,forMyself = FAKE_DATA.get(1),"brought cookies to ping pong","anger",""),
+    DiaryEntry(2, LocalDate.of(2024,1,2),1,1,forMyself = FAKE_DATA.get(2),"cleaned the floor","honry","")
 )

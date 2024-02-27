@@ -21,12 +21,12 @@ import dagger.Binds
 import dagger.Module
 import dagger.hilt.InstallIn
 import dagger.hilt.components.SingletonComponent
+import de.blumesladen.data.DefaultDiaryEntryRepository
+import de.blumesladen.data.DiaryEntryRepository
+import de.blumesladen.data.local.database.DiaryEntry
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.flowOf
-import de.blumesladen.data.DiaryEntryRepository
-import de.blumesladen.data.DefaultDiaryEntryRepository
-import de.blumesladen.data.local.database.DiaryEntry
-import java.time.LocalDateTime
+import java.time.LocalDate
 import javax.inject.Inject
 import javax.inject.Singleton
 
@@ -51,7 +51,7 @@ class FakeDiaryEntryRepository @Inject constructor() : DiaryEntryRepository {
 
 @SuppressLint("NewApi")
 val fakeDiaryEntrys = listOf(
-    DiaryEntry(0, LocalDateTime.now(),1,1,"bike tour","made cashier smile","frustration","cookies"),
-    DiaryEntry(1, LocalDateTime.of(2024,1,1,0,0,0,0),1,1,"small walk","brought cookies to ping pong","anger",""),
-    DiaryEntry(2, LocalDateTime.of(2024,1,2,0,0,0,0),1,1,"Yoga","cleaned the floor","honry","")
+    DiaryEntry(0, LocalDate.now(),1,1,"bike tour","made cashier smile","frustration","cookies"),
+    DiaryEntry(1, LocalDate.of(2024,1,1),1,1,"small walk","brought cookies to ping pong","anger",""),
+    DiaryEntry(2, LocalDate.of(2024,1,2),1,1,"Yoga","cleaned the floor","honry","")
 )

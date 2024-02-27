@@ -24,7 +24,7 @@ import androidx.room.PrimaryKey
 import androidx.room.Query
 import androidx.room.TypeConverter
 import kotlinx.coroutines.flow.Flow
-import java.time.LocalDateTime
+import java.time.LocalDate
 import java.time.format.DateTimeFormatter
 
 @Entity
@@ -34,7 +34,7 @@ data class DiaryEntry constructor(
     val uid: Int = 0,
 
     @ColumnInfo(name = "entry_date")
-    val entryDate: LocalDateTime = LocalDateTime.now(),
+    val entryDate: LocalDate = LocalDate.now(),
     @ColumnInfo(name = "abstinent", defaultValue = "0")
     val abstinent: Int = 0,
     @ColumnInfo(name = "exercised", defaultValue = "0")
@@ -51,7 +51,7 @@ data class DiaryEntry constructor(
     val anticipation: String? = null
 ) {
     val entryDateFormatted : String
-        get() = entryDate.format(DateTimeFormatter.ofPattern("yyyy/MM/dd"))
+        get() = entryDate.format(DateTimeFormatter.ofPattern("yyyy-MM-dd"))
 }
 
 @Dao
@@ -66,12 +66,12 @@ interface DiaryEntryDao {
 
 class Converters {
     @TypeConverter
-    fun fromTimestamp(value: String?): LocalDateTime? {
-        return value?.let { LocalDateTime.parse(it) }
+    fun fromTimestamp(value: String?): LocalDate? {
+        return value?.let { LocalDate.parse(it) }
     }
 
     @TypeConverter
-    fun dateToTimestamp(date: LocalDateTime?): String? {
+    fun dateToTimestamp(date: LocalDate?): String? {
         return date?.toString()
     }
 }

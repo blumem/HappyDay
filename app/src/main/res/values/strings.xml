@@ -16,6 +16,7 @@
 
 <resources>
     <string name="app_name">HappyDay</string>
+    <string name="ok_action">OK</string>
     <string name="save_action">Save</string>
     <string name="cancel_action">Cancel</string>
     <string name="diary_entry_for_myself">What have I done for myself?</string>
@@ -23,4 +24,5 @@
     <string name="diary_entry_unexpressed_emotions">What unexpressed emotions was I holding?</string>
     <string name="diary_entry_something_good">List 1–3 good things that happened</string>
     <string name="diary_entry_anticipation">What are you looking forward to tomorrow?</string>
+    <string name="calendar_button_content_description">Open Calendar Day Selector</string>
 </resources>
