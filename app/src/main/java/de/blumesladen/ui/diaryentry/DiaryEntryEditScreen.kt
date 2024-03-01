@@ -10,6 +10,8 @@ import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.layout.width
+import androidx.compose.foundation.rememberScrollState
+import androidx.compose.foundation.verticalScroll
 import androidx.compose.material3.Button
 import androidx.compose.material3.DatePicker
 import androidx.compose.material3.DatePickerDialog
@@ -35,7 +37,10 @@ import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.hilt.navigation.compose.hiltViewModel
+import androidx.navigation.NavController
+import androidx.navigation.compose.rememberNavController
 import de.blumesladen.R
+import de.blumesladen.data.di.FakeDiaryEntryRepository
 import de.blumesladen.ui.theme.MyApplicationTheme
 import kotlinx.coroutines.launch
 import java.text.SimpleDateFormat
@@ -48,12 +53,18 @@ import java.util.Locale
 @OptIn(ExperimentalMaterial3Api::class)
 
 @Composable
-fun DiaryEntryEditDialog(modifier: Modifier = Modifier, viewModel: DiaryEntryViewModel = hiltViewModel()) {
+fun DiaryEntryEditDialog(
+    navController : NavController,
+    modifier: Modifier = Modifier,
+    viewModel: DiaryEntryViewModel = hiltViewModel()
+) {
     val coroutineScope = rememberCoroutineScope()
 
     Column (
         verticalArrangement = Arrangement.spacedBy(dimensionResource(id = R.dimen.padding_large)),
-        modifier = modifier.padding(dimensionResource(id = R.dimen.padding_medium))
+        modifier = modifier
+            .padding(dimensionResource(id = R.dimen.padding_medium))
+            .verticalScroll(rememberScrollState())
     ) {
         DiaryEntryEditInputFields(
             entry = viewModel.uiState,
@@ -66,21 +77,22 @@ fun DiaryEntryEditDialog(modifier: Modifier = Modifier, viewModel: DiaryEntryVie
             Button(
                 onClick = {  coroutineScope.launch {
                     viewModel.addDiaryEntry(viewModel.uiState.diaryEntryDetails.toDiaryEntry())
-                    //navigateBack()
+                    navController.popBackStack()
                 }},
                 enabled = true,
                 shape = MaterialTheme.shapes.small,
-                modifier = Modifier.fillMaxWidth()
+                modifier = Modifier.weight(0.5f)
             ) {
                 Text(text = stringResource(R.string.save_action))
             }
+            Spacer(modifier = Modifier.width(16.dp))
             Button(
                 onClick = {
-                          // navigateBack()
+                    navController.popBackStack()
                 },
                 enabled = true,
                 shape = MaterialTheme.shapes.small,
-                modifier = Modifier.fillMaxWidth()
+                modifier = Modifier.weight(0.5f)
             ) {
                 Text(text = stringResource(R.string.cancel_action))
             }
@@ -253,9 +265,18 @@ private fun convertMillisToDate(millis: Long): String {
 
 @Preview(showBackground = true)
 @Composable
-fun DiaryEntryEditScreenPreview() {
+fun DiaryEntryEditInputFieldsPreview() {
     MyApplicationTheme {
         DiaryEntryEditInputFields(entry = fakeDiaryUiState, onValueChange = {})
+    }
+}
+
+@Preview(showBackground = true, showSystemUi = true)
+@Composable
+fun DiaryEntryEditScreenPreview() {
+    val viewModel = DiaryEntryViewModel(FakeDiaryEntryRepository())
+    MyApplicationTheme {
+        DiaryEntryEditDialog(navController = rememberNavController(), viewModel=viewModel)
     }
 }
 

@@ -36,6 +36,7 @@ import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.hilt.navigation.compose.hiltViewModel
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
+import androidx.navigation.NavController
 import de.blumesladen.R
 import de.blumesladen.data.di.fakeDiaryEntrys
 import de.blumesladen.data.local.database.DiaryEntry
@@ -43,7 +44,11 @@ import de.blumesladen.ui.diaryentry.DiaryEntriesUiState.Success
 import de.blumesladen.ui.theme.MyApplicationTheme
 
 @Composable
-fun DiaryEntryScreen(modifier: Modifier = Modifier, viewModel: DiaryEntriesViewModel = hiltViewModel()) {
+fun DiaryEntryScreen(
+    navController: NavController,
+    modifier: Modifier = Modifier,
+    viewModel: DiaryEntriesViewModel = hiltViewModel()
+) {
     val items by viewModel.uiState.collectAsStateWithLifecycle()
     if (items is Success) {
         DiaryEntryScreen(

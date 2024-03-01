@@ -143,6 +143,7 @@ tasks.register<JacocoReport>("unitTestCoverageReport") {
 
 dependencies {
     implementation(libs.androidx.navigation.testing)
+    implementation(libs.androidx.material)
     androidTestImplementation(libs.turbine)
     val composeBom = platform(libs.androidx.compose.bom)
     implementation(composeBom)
