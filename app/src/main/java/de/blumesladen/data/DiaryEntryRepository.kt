@@ -18,13 +18,17 @@ package de.blumesladen.data
 
 import de.blumesladen.data.local.database.DiaryEntry
 import de.blumesladen.data.local.database.DiaryEntryDao
+import io.github.boguszpawlowski.composecalendar.kotlinxDateTime.YearMonth
 import kotlinx.coroutines.flow.Flow
 import javax.inject.Inject
+import java.time.LocalDate
 
 interface DiaryEntryRepository {
     val diaryEntrys: Flow<List<DiaryEntry>>
 
     suspend fun add(diaryEntry: DiaryEntry)
+
+    suspend fun loadMonth(month: LocalDate) : Flow<List<DiaryEntry>>
 }
 
 class DefaultDiaryEntryRepository @Inject constructor(
@@ -32,9 +36,13 @@ class DefaultDiaryEntryRepository @Inject constructor(
 ) : DiaryEntryRepository {
 
     override val diaryEntrys: Flow<List<DiaryEntry>> =
-        diaryEntryDao.getDiaryEntrys() // .map { items -> items.map { it.name } }
+        diaryEntryDao.getDiaryEntriesMostRecent() // .map { items -> items.map { it.name } }
 
     override suspend fun add(diaryEntry: DiaryEntry) {
         diaryEntryDao.insertDiaryEntry(diaryEntry)
+    }
+
+    override suspend fun loadMonth(month: LocalDate) : Flow<List<DiaryEntry>> {
+        return diaryEntryDao.getDiaryEntriesForMonth(YearMonth.of(year=month.year, month=month.month))
     }
 }

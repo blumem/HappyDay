@@ -22,19 +22,23 @@ plugins {
     alias(libs.plugins.android.application)
     alias(libs.plugins.kotlin.android)
     alias(libs.plugins.hilt.gradle)
-    alias(libs.plugins.ksp)
-    alias(libs.plugins.kotlin.kapt)
     jacoco
     // jacoco github actions example:
     // https://github.com/marketplace/actions/jacoco-report
     // jacoco command line invocation:
     // ./gradlew :app:createDebugCoverageReport
+    alias(libs.plugins.ksp) // might brake the below
+    // kapt needs to be the last statement https://github.com/google/dagger/issues/2040
+    alias(libs.plugins.kotlin.kapt)
 }
 
 android {
     namespace = "de.blumesladen"
     compileSdk = 34
 
+    hilt {
+        enableAggregatingTask = true
+    }
     testCoverage {
         // note there is a bug causing this version to be right now ignored. To be fixed by Google
         //
@@ -70,6 +74,9 @@ android {
     }
 
     compileOptions {
+        // Flag to enable support for the new language APIs
+        isCoreLibraryDesugaringEnabled = true
+        // Sets Java compatibility to version 17
         sourceCompatibility = JavaVersion.VERSION_17
         targetCompatibility = JavaVersion.VERSION_17
     }
@@ -144,6 +151,9 @@ tasks.register<JacocoReport>("unitTestCoverageReport") {
 dependencies {
     implementation(libs.androidx.navigation.testing)
     implementation(libs.androidx.material)
+    implementation(libs.composecalendar)
+    implementation(libs.kotlinx.datetime)
+    coreLibraryDesugaring(libs.desugar.jdk.libs)
     androidTestImplementation(libs.turbine)
     val composeBom = platform(libs.androidx.compose.bom)
     implementation(composeBom)

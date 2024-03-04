@@ -57,7 +57,7 @@ class DiaryEntryDaoTest {
         diaryEntryDao.insertDiaryEntry(entry1)
         diaryEntryDao.insertDiaryEntry(entry2)
 
-        diaryEntryDao.getDiaryEntrys().test {
+        diaryEntryDao.getDiaryEntriesMostRecent().test {
             val list = awaitItem()
             Log.d("DAO_TEST" , "list is $list")
             assert(list.contains(entry1))

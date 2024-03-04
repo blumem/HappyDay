@@ -47,11 +47,15 @@ class FakeDiaryEntryRepository @Inject constructor() : DiaryEntryRepository {
     override suspend fun add(diaryEntry: DiaryEntry) {
         throw NotImplementedError()
     }
+
+    override suspend fun loadMonth(month: LocalDate): Flow<List<DiaryEntry>> {
+        return flowOf(fakeDiaryEntrys)
+    }
 }
 
 @SuppressLint("NewApi")
 val fakeDiaryEntrys = listOf(
     DiaryEntry(0, LocalDate.now(),1,1,"bike tour","made cashier smile","frustration","cookies"),
-    DiaryEntry(1, LocalDate.of(2024,1,1),1,1,"small walk","brought cookies to ping pong","anger",""),
-    DiaryEntry(2, LocalDate.of(2024,1,2),1,1,"Yoga","cleaned the floor","honry","")
+    DiaryEntry(1, LocalDate.now().minusDays(1),1,1,"small walk","brought cookies to ping pong","anger",""),
+    DiaryEntry(2, LocalDate.now().minusDays(3),1,1,"Yoga","cleaned the floor","honry","")
 )

@@ -19,6 +19,9 @@ ksp = "1.9.22-1.0.17"
 navigationTesting = "2.7.7"
 turbine = "1.0.0"
 material = "1.7.0-alpha03"
+composecalendar = "1.2.0"
+kotlinxDatetime = "1.2.0"
+desugar_jdk_libs = "2.0.4"
 
 [libraries]
 androidx-core-ktx = { module = "androidx.core:core-ktx", version.ref = "androidxCore" }
@@ -51,6 +54,9 @@ kotlinx-coroutines-test = { module = "org.jetbrains.kotlinx:kotlinx-coroutines-t
 androidx-navigation-testing = { group = "androidx.navigation", name = "navigation-testing", version.ref = "navigationTesting" }
 turbine = { group = "app.cash.turbine", name = "turbine", version.ref = "turbine" }
 androidx-material = { group = "androidx.compose.material", name = "material", version.ref = "material" }
+composecalendar = { group = "io.github.boguszpawlowski.composecalendar", name = "composecalendar", version.ref = "composecalendar" }
+kotlinx-datetime = { group = "io.github.boguszpawlowski.composecalendar", name = "kotlinx-datetime", version.ref = "kotlinxDatetime" }
+desugar_jdk_libs = { group = "com.android.tools", name = "desugar_jdk_libs", version.ref = "desugar_jdk_libs" }
 
 [plugins]
 android-application = { id = "com.android.application", version.ref = "androidGradlePlugin" }

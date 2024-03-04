@@ -41,7 +41,9 @@ class DiaryEntryScreenTest {
     @Before
     fun setup() {
         composeTestRule.setContent {
-            DiaryEntryScreen(FAKE_DATA_ENTRIES)
+            DiaryEntryScreenForm(FAKE_DATA_ENTRIES,
+                onSelectionChanged = {},
+                onMonthChanged = {})
         }
     }
 

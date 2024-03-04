@@ -63,7 +63,6 @@ fun DiaryEntryEditDialog(
     Column (
         verticalArrangement = Arrangement.spacedBy(dimensionResource(id = R.dimen.padding_large)),
         modifier = modifier
-            .padding(dimensionResource(id = R.dimen.padding_medium))
             .verticalScroll(rememberScrollState())
     ) {
         DiaryEntryEditInputFields(
@@ -71,9 +70,7 @@ fun DiaryEntryEditDialog(
             onValueChange = viewModel::updateUiState,
             modifier = modifier.fillMaxWidth()
         )
-        Row(
-            modifier = modifier.padding(dimensionResource(id = R.dimen.padding_large))
-        ) {
+        Row() {
             Button(
                 onClick = {  coroutineScope.launch {
                     viewModel.addDiaryEntry(viewModel.uiState.diaryEntryDetails.toDiaryEntry())
@@ -107,8 +104,8 @@ fun DiaryEntryEditInputFields(
 ) {
     val details : DiaryEntryDetails = entry.diaryEntryDetails
     Column(
-        verticalArrangement = Arrangement.spacedBy(dimensionResource(id = R.dimen.padding_large)),
-        modifier = modifier.padding(vertical = dimensionResource(id = R.dimen.padding_medium))
+        verticalArrangement = Arrangement.spacedBy(dimensionResource(id = R.dimen.padding_medium)),
+        modifier = modifier.padding(vertical = dimensionResource(id = R.dimen.padding_small))
     ) {
         val selectedDate = remember { mutableStateOf(details.entryDate)}
         val showDatePicker = remember { mutableStateOf(false) }
@@ -120,8 +117,14 @@ fun DiaryEntryEditInputFields(
 
             TextField(
                 value = selectedDate.value.format(DateTimeFormatter.ISO_DATE),
-                onValueChange = {},
+                onValueChange = {  },
+                colors = OutlinedTextFieldDefaults.colors(
+                    focusedContainerColor = MaterialTheme.colorScheme.secondaryContainer,
+                    unfocusedContainerColor = MaterialTheme.colorScheme.secondaryContainer,
+                    disabledContainerColor = MaterialTheme.colorScheme.secondaryContainer,
+                ),
                 label = { Text("Date:") },
+                enabled = false,
                 modifier = Modifier
                     .weight(1f)
             )

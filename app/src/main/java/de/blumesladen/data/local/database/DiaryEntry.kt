@@ -23,6 +23,7 @@ import androidx.room.Insert
 import androidx.room.PrimaryKey
 import androidx.room.Query
 import androidx.room.TypeConverter
+import io.github.boguszpawlowski.composecalendar.kotlinxDateTime.YearMonth
 import kotlinx.coroutines.flow.Flow
 import java.time.LocalDate
 import java.time.format.DateTimeFormatter
@@ -56,8 +57,12 @@ data class DiaryEntry constructor(
 
 @Dao
 interface DiaryEntryDao {
-    @Query("SELECT * FROM diaryentry ORDER BY uid DESC LIMIT 10")
-    fun getDiaryEntrys(): Flow<List<DiaryEntry>>
+    @Query("SELECT * FROM diaryentry ORDER BY entry_date DESC LIMIT 10")
+    fun getDiaryEntriesMostRecent(): Flow<List<DiaryEntry>>
+
+    @Query("SELECT * FROM diaryentry WHERE strftime('%m', entry_date)=strftime('%m', :month) " +
+            "AND strftime('%Y', entry_date)=strftime('%Y', :month) ORDER BY entry_date ASC")
+    fun getDiaryEntriesForMonth(month : YearMonth): Flow<List<DiaryEntry>>
 
     @Insert
     suspend fun insertDiaryEntry(item: DiaryEntry)
@@ -71,7 +76,17 @@ class Converters {
     }
 
     @TypeConverter
-    fun dateToTimestamp(date: LocalDate?): String? {
+    fun toTimestamp(date: LocalDate?): String? {
+        return date?.toString()
+    }
+
+    @TypeConverter
+    fun fromDate(value: String?): YearMonth? {
+        return value?.let{ YearMonth.parse(it) }
+    }
+
+    @TypeConverter
+    fun toTimestamp(date: YearMonth?): String? {
         return date?.toString()
     }
 }
