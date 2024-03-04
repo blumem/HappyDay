@@ -57,7 +57,7 @@ data class DiaryEntry constructor(
 
 @Dao
 interface DiaryEntryDao {
-    @Query("SELECT * FROM diaryentry ORDER BY entry_date DESC LIMIT 10")
+    @Query("SELECT * FROM diaryentry ORDER BY entry_date DESC LIMIT 31")  // 31 days = longest month
     fun getDiaryEntriesMostRecent(): Flow<List<DiaryEntry>>
 
     @Query("SELECT * FROM diaryentry WHERE strftime('%m', entry_date)=strftime('%m', :month) " +

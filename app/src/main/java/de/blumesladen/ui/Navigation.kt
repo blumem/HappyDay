@@ -91,7 +91,7 @@ fun MainNavigation() {
     ) { innerPadding ->
         NavHost(
             navController = navController,
-            startDestination = Screen.DiaryEntryEditRoute.route,
+            startDestination = Screen.DiaryEntryViewRoute.route,
             modifier = Modifier.padding(innerPadding)
         ) {
             composable(Screen.DiaryEntryEditRoute.route) {

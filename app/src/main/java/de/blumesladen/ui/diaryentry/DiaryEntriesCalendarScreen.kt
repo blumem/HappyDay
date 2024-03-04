@@ -17,6 +17,7 @@
 package de.blumesladen.ui.diaryentry
 
 import androidx.compose.foundation.BorderStroke
+import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.aspectRatio
 import androidx.compose.foundation.layout.fillMaxWidth
@@ -29,9 +30,11 @@ import androidx.compose.material.MaterialTheme
 import androidx.compose.material.contentColorFor
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.LaunchedEffect
+import androidx.compose.runtime.collectAsState
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.saveable.rememberSaveable
 import androidx.compose.runtime.snapshotFlow
+import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.text.style.TextAlign
@@ -42,6 +45,7 @@ import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import androidx.navigation.NavController
 import de.blumesladen.data.di.fakeDiaryEntrys
 import de.blumesladen.data.local.database.DiaryEntry
+import de.blumesladen.ui.Screen
 import de.blumesladen.ui.diaryentry.DiaryEntriesUiState.Success
 import de.blumesladen.ui.theme.MyApplicationTheme
 import io.github.boguszpawlowski.composecalendar.SelectableCalendar
@@ -62,13 +66,15 @@ fun DiaryEntryScreen(
     viewModel: DiaryEntriesViewModel = hiltViewModel()
 ) {
     val items by viewModel.uiState.collectAsStateWithLifecycle()
+    val itemsFlow by viewModel.diaryEntryFlow.collectAsState(0)
     if (items is Success) {
         DiaryEntryScreenForm(
             items = (items as Success).data,
-            // onSave = viewModel::addDiaryEntry,
-            onSelectionChanged = viewModel::onSelectionChanged,
+            // itemsFlow = itemsFlow,
+            onSelectionChanged = {
+                viewModel.onSelectionChanged(it)
+                navController.navigate(Screen.DiaryEntryEditRoute.route) },
             onMonthChanged = viewModel::onMonthChanged,
-            // modifier = modifier,
         )
     }
 }
@@ -76,6 +82,7 @@ fun DiaryEntryScreen(
 @Composable
 internal fun DiaryEntryScreenForm(
     items: List<DiaryEntry>,
+    // itemsFlow: Flow<List<DiaryEntry>>,
     onSelectionChanged: (diaryEntry: List<LocalDate>) -> Unit,
     onMonthChanged: (newMonth: YearMonth) -> Unit,
     // modifier: Modifier = Modifier
@@ -91,6 +98,7 @@ internal fun DiaryEntryScreenForm(
         monthState = monthState,
         initialSelectionMode = SelectionMode.Single,
     )
+
     Column(
         Modifier.verticalScroll(rememberScrollState())
     ) {
@@ -103,6 +111,12 @@ internal fun DiaryEntryScreenForm(
                 )
             }
         )
+//        Spacer(modifier = Modifier.height(20.dp))
+//        Text(
+//            text = "Selected recipes price: $selectedPrice",
+//            style = MaterialTheme.typography.h6,
+//        )
+//        Spacer(modifier = Modifier.height(20.dp))
     }
 }
 
@@ -135,6 +149,8 @@ private fun DayContent(
         Column(
             modifier = Modifier
                 .padding(vertical = 2.dp)
+                .clickable { dayState.selectionState.onDateSelected(dayState.date) },
+            horizontalAlignment = Alignment.CenterHorizontally,
         ) {
             androidx.compose.material.Text(
                 text = dayState.date.dayOfMonth.toString(),
@@ -143,7 +159,7 @@ private fun DayContent(
                 style = MaterialTheme.typography.h6,
             )
             // Divider(color = Color.Blue, thickness = 4.dp)
-            if (dayState.selectionState.isDateSelected(dayState.date)) {
+            if (item != null) {
                 Divider(color = Color.Green,
                     thickness = 4.dp,
                     modifier = Modifier.padding(vertical = 2.dp))

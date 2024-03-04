@@ -2,6 +2,7 @@ package de.blumesladen.ui.diaryentry
 
 
 import android.annotation.SuppressLint
+import android.util.Log
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Row
@@ -74,6 +75,7 @@ fun DiaryEntryEditDialog(
             Button(
                 onClick = {  coroutineScope.launch {
                     viewModel.addDiaryEntry(viewModel.uiState.diaryEntryDetails.toDiaryEntry())
+                    Log.i("SAVE_DIARY_ENTRY", viewModel.uiState.diaryEntryDetails.toString())
                     navController.popBackStack()
                 }},
                 enabled = true,
