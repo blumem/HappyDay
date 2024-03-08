@@ -36,9 +36,11 @@ import androidx.navigation.compose.NavHost
 import androidx.navigation.compose.composable
 import androidx.navigation.compose.currentBackStackEntryAsState
 import androidx.navigation.compose.rememberNavController
+import androidx.navigation.navArgument
 import de.blumesladen.R
-import de.blumesladen.ui.diaryentry.DiaryEntryEditDialog
-import de.blumesladen.ui.diaryentry.DiaryEntryScreen
+import de.blumesladen.ui.diaryentry.DiaryEntriesCalendarScreen
+import de.blumesladen.ui.diaryentry.DiaryEntryEditScreen
+import java.time.LocalDate
 
 sealed class Screen(val route: String, @StringRes val resourceId: Int) {
     object DiaryEntryEditRoute : Screen("rDiaryEntryEdit", R.string.rDiaryEntryEdit)
@@ -94,12 +96,19 @@ fun MainNavigation() {
             startDestination = Screen.DiaryEntryViewRoute.route,
             modifier = Modifier.padding(innerPadding)
         ) {
-            composable(Screen.DiaryEntryEditRoute.route) {
-                DiaryEntryEditDialog(navController, modifier = Modifier.padding(16.dp))
+            composable(Screen.DiaryEntryEditRoute.route+"?date={date}",
+                arguments = listOf(
+                    navArgument("date") { defaultValue = LocalDate.now().toString()})
+            ) { backStackEntry ->
+                DiaryEntryEditScreen(
+                    navController = navController,
+                    date = LocalDate.parse(backStackEntry.arguments?.getString("date"))
+                    // modifier = Modifier.padding(16.dp))
+                )
             }
             // TODO: Add more destinations
             composable(Screen.DiaryEntryViewRoute.route) {
-                DiaryEntryScreen(navController, modifier = Modifier.padding(16.dp))
+                DiaryEntriesCalendarScreen(navController, modifier = Modifier.padding(16.dp))
             }
         }
     }

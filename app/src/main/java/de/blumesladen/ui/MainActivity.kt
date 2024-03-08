@@ -24,12 +24,34 @@ import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Surface
 import androidx.compose.ui.Modifier
 import dagger.hilt.android.AndroidEntryPoint
+import de.blumesladen.data.local.database.AppDatabase
 import de.blumesladen.ui.theme.MyApplicationTheme
+import kotlinx.coroutines.Dispatchers
+import kotlinx.coroutines.runBlocking
+import kotlinx.coroutines.withContext
 
 @AndroidEntryPoint
 class MainActivity : ComponentActivity() {
 
+    private suspend fun resetDb(db : AppDatabase) = withContext(Dispatchers.IO){
+        db.runInTransaction{
+            runBlocking {
+                db.clearAllTables()
+                db.databaseDao().clearPrimaryKeyIndex()
+            }
+        }
+    }
+
     override fun onCreate(savedInstanceState: Bundle?) {
+
+//        // Get an instance of AppDatabase
+//        val db = DatabaseModule().provideAppDatabase(applicationContext)
+//
+//        // Call resetDb
+//        runBlocking {
+//            resetDb(db)
+//        }
+
         super.onCreate(savedInstanceState)
         setContent {
             MyApplicationTheme {

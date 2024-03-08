@@ -24,7 +24,7 @@ import dagger.hilt.InstallIn
 import dagger.hilt.android.qualifiers.ApplicationContext
 import dagger.hilt.components.SingletonComponent
 import de.blumesladen.data.local.database.AppDatabase
-import de.blumesladen.data.local.database.DiaryEntryDao
+import de.blumesladen.ui.diaryentry.DiaryEntryDao
 import javax.inject.Singleton
 
 
@@ -43,6 +43,6 @@ class DatabaseModule {
             appContext,
             AppDatabase::class.java,
             "DiaryEntry"
-        ).build()
+        ).fallbackToDestructiveMigration().build()
     }
 }

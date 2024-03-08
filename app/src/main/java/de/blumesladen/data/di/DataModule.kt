@@ -21,13 +21,10 @@ import dagger.Binds
 import dagger.Module
 import dagger.hilt.InstallIn
 import dagger.hilt.components.SingletonComponent
-import de.blumesladen.data.DefaultDiaryEntryRepository
-import de.blumesladen.data.DiaryEntryRepository
 import de.blumesladen.data.local.database.DiaryEntry
-import kotlinx.coroutines.flow.Flow
-import kotlinx.coroutines.flow.flowOf
+import de.blumesladen.ui.diaryentry.DiaryEntryRepository
+import de.blumesladen.ui.diaryentry.DiaryEntryRepositoryImpl
 import java.time.LocalDate
-import javax.inject.Inject
 import javax.inject.Singleton
 
 @Module
@@ -37,10 +34,10 @@ interface DataModule {
     @Singleton
     @Binds
     fun bindsDiaryEntryRepository(
-        diaryEntryRepository: DefaultDiaryEntryRepository
+        diaryEntryRepository: DiaryEntryRepositoryImpl
     ): DiaryEntryRepository
 }
-
+/**
 class FakeDiaryEntryRepository @Inject constructor() : DiaryEntryRepository {
     override val diaryEntrys: Flow<List<DiaryEntry>> = flowOf(fakeDiaryEntrys)
 
@@ -51,8 +48,12 @@ class FakeDiaryEntryRepository @Inject constructor() : DiaryEntryRepository {
     override suspend fun loadMonth(month: LocalDate): Flow<List<DiaryEntry>> {
         return flowOf(fakeDiaryEntrys)
     }
-}
 
+    override suspend fun loadDay(day: LocalDate): Flow<DiaryEntry> {
+        return flowOf(fakeDiaryEntrys.get(0))
+    }
+}
+*/
 @SuppressLint("NewApi")
 val fakeDiaryEntrys = listOf(
     DiaryEntry(0, LocalDate.now(),1,1,"bike tour","made cashier smile","frustration","cookies"),

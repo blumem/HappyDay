@@ -20,9 +20,9 @@ import dagger.Binds
 import dagger.Module
 import dagger.hilt.components.SingletonComponent
 import dagger.hilt.testing.TestInstallIn
-import de.blumesladen.data.DiaryEntryRepository
 import de.blumesladen.data.di.DataModule
-import de.blumesladen.data.di.FakeDiaryEntryRepository
+import de.blumesladen.ui.diaryentry.DiaryEntryRepository
+import de.blumesladen.ui.diaryentry.FakeDiaryEntryRepository
 
 @Module
 @TestInstallIn(

@@ -1,5 +1,5 @@
 [versions]
-androidGradlePlugin = "8.3.0-rc02"
+androidGradlePlugin = "8.3.0"
 androidxCore = "1.12.0"
 androidxLifecycle = "2.7.0"
 androidxActivity = "1.8.2"
@@ -22,6 +22,8 @@ material = "1.7.0-alpha03"
 composecalendar = "1.2.0"
 kotlinxDatetime = "1.2.0"
 desugar_jdk_libs = "2.0.4"
+navigationSafeArgsGradlePlugin = "2.7.7"
+mockitoCore = "5.11.0"
 
 [libraries]
 androidx-core-ktx = { module = "androidx.core:core-ktx", version.ref = "androidxCore" }
@@ -57,6 +59,8 @@ androidx-material = { group = "androidx.compose.material", name = "material", ve
 composecalendar = { group = "io.github.boguszpawlowski.composecalendar", name = "composecalendar", version.ref = "composecalendar" }
 kotlinx-datetime = { group = "io.github.boguszpawlowski.composecalendar", name = "kotlinx-datetime", version.ref = "kotlinxDatetime" }
 desugar_jdk_libs = { group = "com.android.tools", name = "desugar_jdk_libs", version.ref = "desugar_jdk_libs" }
+mockito-core = { group = "org.mockito", name = "mockito-core", version.ref = "mockitoCore" }
+
 
 [plugins]
 android-application = { id = "com.android.application", version.ref = "androidGradlePlugin" }
@@ -65,3 +69,4 @@ kotlin-android = { id = "org.jetbrains.kotlin.android", version.ref = "kotlin" }
 kotlin-kapt = { id = "org.jetbrains.kotlin.kapt", version.ref = "kotlin" }
 ksp = { id = "com.google.devtools.ksp", version.ref = "ksp"}
 hilt-gradle = { id = "com.google.dagger.hilt.android", version.ref = "hilt" }
+navigation-safe-args = { id = "androidx.navigation.safeargs", version.ref = "navigationSafeArgsGradlePlugin" }

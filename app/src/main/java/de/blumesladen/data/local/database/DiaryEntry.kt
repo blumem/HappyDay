@@ -16,19 +16,17 @@
 
 package de.blumesladen.data.local.database
 
+import android.annotation.SuppressLint
 import androidx.room.ColumnInfo
-import androidx.room.Dao
 import androidx.room.Entity
-import androidx.room.Insert
+import androidx.room.Index
 import androidx.room.PrimaryKey
-import androidx.room.Query
 import androidx.room.TypeConverter
 import io.github.boguszpawlowski.composecalendar.kotlinxDateTime.YearMonth
-import kotlinx.coroutines.flow.Flow
 import java.time.LocalDate
 import java.time.format.DateTimeFormatter
 
-@Entity
+@Entity(indices = [Index(value=["entry_date"], unique = true)])
 data class DiaryEntry constructor(
     @PrimaryKey(autoGenerate = true)
     @ColumnInfo(name = "uid")
@@ -53,21 +51,87 @@ data class DiaryEntry constructor(
 ) {
     val entryDateFormatted : String
         get() = entryDate.format(DateTimeFormatter.ofPattern("yyyy-MM-dd"))
+
+    override fun toString() : String {
+        return "$entryDate:\nFor myself: $forMyself\nFor others: $forOthers\n"
+    }
 }
 
-@Dao
-interface DiaryEntryDao {
-    @Query("SELECT * FROM diaryentry ORDER BY entry_date DESC LIMIT 31")  // 31 days = longest month
-    fun getDiaryEntriesMostRecent(): Flow<List<DiaryEntry>>
+/**
+ * *****************************************************************************************
+ * Github co-pilot prompt for Data Layer:
+ * *****************************************************************************************
+  Generate a DAO and DiaryEntryRepository to load, insert and delete single DiaryEntries.
+  Loading single records should be possible by uid and by entryDate. Loading multiple entries should
+  be possible by loading the most recent 30 days, by loading all entries where entryDate is from a
+  given month and one function to load all entries. Use Flow where necessary.
 
-    @Query("SELECT * FROM diaryentry WHERE strftime('%m', entry_date)=strftime('%m', :month) " +
-            "AND strftime('%Y', entry_date)=strftime('%Y', :month) ORDER BY entry_date ASC")
-    fun getDiaryEntriesForMonth(month : YearMonth): Flow<List<DiaryEntry>>
+  Generate a DateEntryRepository interface and one implementing class using the DiaryEntryDao.
+    It should implement the following functions to load, insert
+    and delete single record as well as to load a given month and the last 30 days. The DiaryEntryDao
+    should get injected by Hilt.
+  Generate a fake implementation of the DateEntryRepository interface for testing purposes
+    that is taking a injected hilt constructor and
+    gets via init populated with 10 fake DiaryEntry objects.
 
-    @Insert
-    suspend fun insertDiaryEntry(item: DiaryEntry)
-}
+  Create a HiltViewModel with a SavedStateHandle for the string parameter "date" of type LocalDate
+  that uses the DiaryEntryRepository to load and insert DiaryEntries. The date parameter shall be
+  stored in a local private variable and used to initialize the diaryEntry.
+  If an object is loaded by entryDate it should return the corresponding object from the database
+  or a new object with the given entryDate parameter.
+  Moreover, the ViewModel should provide a function to update the current
+  diaryEntry value of the ViewModel, that can be called from the Compose UI without storing it back into the repository.
+  Finally, the ViewModel should have a function to insert
+  an DiaryEntry into the DiaryEntryRepository and a function to delete the Entry.
+  Each DiaryEntryViewModel function should update the private date variable if necessary.
+ *
+ */
 
+@SuppressLint("NewApi")
+val fakeDiaryEntrys = listOf(
+    DiaryEntry(0, LocalDate.now(),1,1,"bike tour","made cashier smile","frustration","cookies"),
+    DiaryEntry(1, LocalDate.now().minusDays(1),1,1,"small walk","brought cookies to ping pong","anger",""),
+    DiaryEntry(2, LocalDate.now().minusDays(3),1,1,"Yoga","cleaned the floor","honry","")
+)
+/**
+ * *****************************************************************************************
+ * Github co-pilot prompt for Compose UI:
+ * *****************************************************************************************
+ Create a jetpack Compose function called DiaryEntryEditor that takes a DiaryEntry and a
+ function onValueChange calling viewModel::updateDiaryEntry as parameters.
+The function does not create it's own mutable state of the DiaryEntry but uses the one passed as parameter.
+Therefore every onValueChange inside the function for each component should call the onValueChange-parameter function
+just passing the diaryEntry.copy() with the new value.
+For all labels, use the XML string resources.
+ The function should use a column layout.
+ At the top, there is a Row Layout with verticalAlignment = Alignment.CenterVertically holding two
+ components:
+ 1) For the entryDate use a disabled TextField and a modifier set weight to 0.75f (75% of the available space).
+ 2) and a IconButton showing a calendar icon using the function CalendarTodayIcon() and
+    the contentDescription set to  stringResource(R.string.calendar_button_content_description),
+    that toggles a boolean variable showDatePickerDialog.
+
+ This variable controls whether the MyDatePickerDialog is displayed to change the date of the
+ DiaryEntry below the entryDate field.
+ Using Material3 OutlinedTextField to edit the forMyself, forOthers, unexpressedEmotions,
+ somethingGood and anticipation fields of the DiaryEntry with the modifier set to Modifier.fillMaxWidth()
+ and two Row Layouts using verticalAlignment = Alignment.CenterVertically to display checkboxes
+ with text labels to edit the abstinent and exercised fields of the DiaryEntry.
+ The function DiaryEntryEditor should not contain any buttons.
+
+ Create another jetpack compose function called DiaryEntryEditScreen that takes 3 parameter:
+ a DiaryEntryViewModel using hiltViewModel(), a String called "date", and a navController.
+ The first line is val diaryEntry by remember { viewModel.diaryEntry }. diaryEntry will be passed
+ to the DiaryEntryEditor later as parameter.
+ The function uses a Column Layout with vertical scroll enabled to display the
+ DiaryEntryEditor and two buttons.
+ The Buttons are in a Row Layout with horizontalArrangement = Arrangement.spacedBy(16.dp).
+ The first button should call "save" and onClick call
+     first viewModel::insertDiaryEntry with the current DiaryEntry followed by navController.popBackStack().
+ The second button should be called "cancel" and call onClick the navController.popBackStack().
+
+ create for both functions preview functions that show the DiaryEntryEditor and DiaryEntryEditScreen.
+ */
 
 class Converters {
     @TypeConverter

@@ -1,23 +1,22 @@
 package de.blumesladen.ui.diaryentry
 
 import androidx.activity.ComponentActivity
-import androidx.compose.runtime.getValue
-import androidx.compose.runtime.mutableStateOf
-import androidx.compose.runtime.setValue
 import androidx.compose.ui.test.assertIsEnabled
 import androidx.compose.ui.test.assertTextEquals
 import androidx.compose.ui.test.junit4.createAndroidComposeRule
 import androidx.compose.ui.test.onNodeWithContentDescription
 import androidx.compose.ui.test.onNodeWithText
 import androidx.compose.ui.test.performClick
+import androidx.compose.ui.test.performTextClearance
 import androidx.compose.ui.test.performTextInput
+import androidx.lifecycle.SavedStateHandle
 import androidx.test.ext.junit.runners.AndroidJUnit4
 import androidx.test.filters.MediumTest
 import dagger.hilt.android.testing.BindValue
 import dagger.hilt.android.testing.HiltAndroidRule
 import dagger.hilt.android.testing.HiltAndroidTest
 import de.blumesladen.R
-import de.blumesladen.data.di.FakeDiaryEntryRepository
+import de.blumesladen.data.local.database.DiaryEntry
 import org.junit.Before
 import org.junit.Rule
 import org.junit.Test
@@ -29,7 +28,7 @@ import java.util.Calendar
 @RunWith(AndroidJUnit4::class)
 @MediumTest
 class DiaryEntryEditScreenTest {
-    var uiState by mutableStateOf(DiaryEntryUiState(DiaryEntryDetails()))
+    // var uiState by mutableStateOf(DiaryEntryUiState(diaryEntryDetails =  DiaryEntryDetails()))
 
     @get:Rule(order = 0)
     val hiltRule = HiltAndroidRule(this)
@@ -38,17 +37,20 @@ class DiaryEntryEditScreenTest {
     val composeTestRule = createAndroidComposeRule<ComponentActivity>()
 
     @BindValue
-    val diaryEntryViewModel = DiaryEntryViewModel(diaryEntryRepository = FakeDiaryEntryRepository())
+    val diaryEntryViewModel = DiaryEntryViewModel(
+        diaryEntryRepository = FakeDiaryEntryRepository(),
+        savedStateHandle = SavedStateHandle()
+    )
 
-    fun updateUIState(d : DiaryEntryDetails) {
-        uiState = DiaryEntryUiState(d)
+    fun updateUIState(diaryEntry: DiaryEntry) {
+        diaryEntryViewModel.diaryEntry.value = diaryEntry
     }
 
     @Before
     fun setup() {
         hiltRule.inject()
         composeTestRule.setContent {
-            DiaryEntryEditInputFields(uiState, onValueChange = this::updateUIState )
+            DiaryEntryEditor(diaryEntryViewModel.diaryEntry.value, onValueChange = this::updateUIState )
         }
     }
 
@@ -59,6 +61,7 @@ class DiaryEntryEditScreenTest {
         val element = composeTestRule.onNodeWithText(label) // .onNodeWithContentDescription("textFieldContentDescription")
         element.assertIsEnabled()
         element.performClick()
+        element.performTextClearance()
         element.performTextInput(testInputText)
         composeTestRule.waitForIdle() // Advances the clock until Compose is idle
         element.assertTextEquals(label, testInputText, includeEditableText = true)

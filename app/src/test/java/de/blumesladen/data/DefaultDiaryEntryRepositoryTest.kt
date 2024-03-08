@@ -16,45 +16,102 @@
 
 package de.blumesladen.data
 
-import de.blumesladen.data.local.database.DiaryEntry
-import de.blumesladen.data.local.database.DiaryEntryDao
-import kotlinx.coroutines.ExperimentalCoroutinesApi
-import kotlinx.coroutines.flow.Flow
-import kotlinx.coroutines.flow.first
-import kotlinx.coroutines.flow.flow
-import kotlinx.coroutines.test.runTest
-import org.junit.Assert.assertEquals
-import org.junit.Test
-
 /**
  * Unit tests for [DefaultDiaryEntryRepository].
  */
-@OptIn(ExperimentalCoroutinesApi::class) // TODO: Remove when stable
-class DefaultDiaryEntryRepositoryTest {
+
+import de.blumesladen.data.local.database.DiaryEntry
+import de.blumesladen.ui.diaryentry.DiaryEntryDao
+import de.blumesladen.ui.diaryentry.DiaryEntryRepositoryImpl
+import kotlinx.coroutines.flow.first
+import kotlinx.coroutines.flow.flowOf
+import kotlinx.coroutines.runBlocking
+import org.junit.Assert.assertEquals
+import org.junit.Before
+import org.junit.Test
+import org.mockito.Mock
+import org.mockito.Mockito
+import org.mockito.MockitoAnnotations
+import java.time.LocalDate
+
+class DiaryEntryRepositoryImplTest {
+
+    @Mock
+    private lateinit var diaryEntryDao: DiaryEntryDao
+
+    private lateinit var diaryEntryRepository: DiaryEntryRepositoryImpl
+
+    @Before
+    fun setup() {
+        MockitoAnnotations.openMocks(this)
+        diaryEntryRepository = DiaryEntryRepositoryImpl(diaryEntryDao)
+    }
 
     @Test
-    fun diaryEntrys_newItemSaved_itemIsReturned() = runTest {
-        val repository = DefaultDiaryEntryRepository(FakeDiaryEntryDao())
+    fun getDiaryEntryByUid_returnsCorrectDiaryEntry() = runBlocking {
+        val expectedDiaryEntry = DiaryEntry(uid = 1)
+        Mockito.`when`(diaryEntryDao.getDiaryEntryByUid(1)).thenReturn(flowOf(expectedDiaryEntry))
 
-        repository.add(FAKE_DIARY_ENTRY)
+        val actualDiaryEntry = diaryEntryRepository.getDiaryEntryByUid(1).first()
 
-        assertEquals(repository.diaryEntrys.first().size, 1)
+        assertEquals(expectedDiaryEntry, actualDiaryEntry)
     }
 
-}
+    @Test
+    fun getDiaryEntryByDate_returnsCorrectDiaryEntry() = runBlocking {
+        val expectedDiaryEntry = DiaryEntry(entryDate = LocalDate.now())
+        Mockito.`when`(diaryEntryDao.getDiaryEntryByDate(LocalDate.now())).thenReturn(flowOf(expectedDiaryEntry))
 
-private val FAKE_DIARY_ENTRY : DiaryEntry
-    get() = DiaryEntry()
+        val actualDiaryEntry = diaryEntryRepository.getDiaryEntryByDate(LocalDate.now()).first()
 
-private class FakeDiaryEntryDao : DiaryEntryDao {
-
-    private val data = mutableListOf<DiaryEntry>()
-
-    override fun getDiaryEntrys(): Flow<List<DiaryEntry>> = flow {
-        emit(data)
+        assertEquals(expectedDiaryEntry, actualDiaryEntry)
     }
 
-    override suspend fun insertDiaryEntry(item: DiaryEntry) {
-        data.add(0, item)
+    @Test
+    fun getDiaryEntriesMostRecent_returnsCorrectDiaryEntries() = runBlocking {
+        val expectedDiaryEntries = listOf(DiaryEntry(uid = 1), DiaryEntry(uid = 2))
+        Mockito.`when`(diaryEntryDao.getDiaryEntriesMostRecent()).thenReturn(flowOf(expectedDiaryEntries))
+
+        val actualDiaryEntries = diaryEntryRepository.getDiaryEntriesMostRecent().first()
+
+        assertEquals(expectedDiaryEntries, actualDiaryEntries)
+    }
+
+    @Test
+    fun getDiaryEntriesByMonth_returnsCorrectDiaryEntries() = runBlocking {
+        val expectedDiaryEntries = listOf(DiaryEntry(uid = 1), DiaryEntry(uid = 2))
+        Mockito.`when`(diaryEntryDao.getDiaryEntriesByMonth("2022-12")).thenReturn(flowOf(expectedDiaryEntries))
+
+        val actualDiaryEntries = diaryEntryRepository.getDiaryEntriesByMonth("2022-12").first()
+
+        assertEquals(expectedDiaryEntries, actualDiaryEntries)
+    }
+
+    @Test
+    fun getAllDiaryEntries_returnsCorrectDiaryEntries() = runBlocking {
+        val expectedDiaryEntries = listOf(DiaryEntry(uid = 1), DiaryEntry(uid = 2))
+        Mockito.`when`(diaryEntryDao.getAllDiaryEntries()).thenReturn(flowOf(expectedDiaryEntries))
+
+        val actualDiaryEntries = diaryEntryRepository.getAllDiaryEntries().first()
+
+        assertEquals(expectedDiaryEntries, actualDiaryEntries)
+    }
+
+    @Test
+    fun insertDiaryEntry_insertsDiaryEntryCorrectly() = runBlocking {
+        val diaryEntry = DiaryEntry(uid = 1)
+
+        diaryEntryRepository.insertDiaryEntry(diaryEntry)
+
+        Mockito.verify(diaryEntryDao).insertDiaryEntry(diaryEntry)
+    }
+
+    @Test
+    fun deleteDiaryEntryByUid_deletesDiaryEntryCorrectly() = runBlocking {
+        val uid = 1
+
+        diaryEntryRepository.deleteDiaryEntryByUid(uid)
+
+        Mockito.verify(diaryEntryDao).deleteDiaryEntryByUid(uid)
     }
 }

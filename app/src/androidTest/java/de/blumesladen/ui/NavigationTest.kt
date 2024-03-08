@@ -27,6 +27,8 @@ import dagger.hilt.android.testing.HiltAndroidTest
 import org.junit.Before
 import org.junit.Rule
 import org.junit.Test
+import java.time.LocalDate
+import java.time.format.DateTimeFormatter
 
 
 // try:
@@ -55,7 +57,7 @@ class NavigationTest {
     @Test
     fun test1() {
         composeTestRule.onNodeWithText(
-            "for myself?",
+            text = LocalDate.now().format(DateTimeFormatter.ofPattern("MMMM")),
             substring = true
         ).assertExists()
     }

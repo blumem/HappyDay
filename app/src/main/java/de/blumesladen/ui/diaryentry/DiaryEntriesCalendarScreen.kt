@@ -24,13 +24,13 @@ import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.rememberScrollState
 import androidx.compose.foundation.verticalScroll
-import androidx.compose.material.Card
-import androidx.compose.material.Divider
-import androidx.compose.material.MaterialTheme
-import androidx.compose.material.contentColorFor
+import androidx.compose.material3.Card
+import androidx.compose.material3.CardDefaults
+import androidx.compose.material3.HorizontalDivider
+import androidx.compose.material3.MaterialTheme
+import androidx.compose.material3.contentColorFor
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.LaunchedEffect
-import androidx.compose.runtime.collectAsState
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.saveable.rememberSaveable
 import androidx.compose.runtime.snapshotFlow
@@ -60,20 +60,23 @@ import java.time.LocalDate
 import java.time.YearMonth
 
 @Composable
-fun DiaryEntryScreen(
+fun DiaryEntriesCalendarScreen(
     navController: NavController,
     modifier: Modifier = Modifier,
     viewModel: DiaryEntriesViewModel = hiltViewModel()
 ) {
     val items by viewModel.uiState.collectAsStateWithLifecycle()
-    val itemsFlow by viewModel.diaryEntryFlow.collectAsState(0)
     if (items is Success) {
         DiaryEntryScreenForm(
             items = (items as Success).data,
-            // itemsFlow = itemsFlow,
             onSelectionChanged = {
                 viewModel.onSelectionChanged(it)
-                navController.navigate(Screen.DiaryEntryEditRoute.route) },
+                if (it.size==0) {
+                    navController.navigate(Screen.DiaryEntryEditRoute.route)
+                } else {
+                    navController.navigate(
+                    "${Screen.DiaryEntryEditRoute.route}?date=${it.get(0).toString()}")
+                } },
             onMonthChanged = viewModel::onMonthChanged,
         )
     }
@@ -82,7 +85,6 @@ fun DiaryEntryScreen(
 @Composable
 internal fun DiaryEntryScreenForm(
     items: List<DiaryEntry>,
-    // itemsFlow: Flow<List<DiaryEntry>>,
     onSelectionChanged: (diaryEntry: List<LocalDate>) -> Unit,
     onMonthChanged: (newMonth: YearMonth) -> Unit,
     // modifier: Modifier = Modifier
@@ -111,12 +113,6 @@ internal fun DiaryEntryScreenForm(
                 )
             }
         )
-//        Spacer(modifier = Modifier.height(20.dp))
-//        Text(
-//            text = "Selected recipes price: $selectedPrice",
-//            style = MaterialTheme.typography.h6,
-//        )
-//        Spacer(modifier = Modifier.height(20.dp))
     }
 }
 
@@ -137,12 +133,15 @@ private fun DayContent(
 ) {
     Card (
         modifier = modifier
-        .aspectRatio(1f)
-        .padding(2.dp),
-        elevation = if (dayState.isFromCurrentMonth) 4.dp else 0.dp,
-        border = if (dayState.isCurrentDay) BorderStroke(1.dp, MaterialTheme.colors.primary) else null,
-        contentColor = if (dayState.selectionState.isDateSelected(dayState.date)) MaterialTheme.colors.secondary else contentColorFor(
-            backgroundColor = MaterialTheme.colors.surface
+            .aspectRatio(1f)
+            .padding(2.dp),
+        elevation = CardDefaults.cardElevation(if (dayState.isFromCurrentMonth) 4.dp else 0.dp),
+        border = if (dayState.isCurrentDay) BorderStroke(1.dp, MaterialTheme.colorScheme.primary) else null,
+        colors = CardDefaults.cardColors(
+            contentColor =
+                if (dayState.selectionState.isDateSelected(dayState.date)) MaterialTheme.colorScheme.secondary
+                else contentColorFor(backgroundColor = MaterialTheme.colorScheme.surface
+            )
         )
     )
     {
@@ -156,11 +155,11 @@ private fun DayContent(
                 text = dayState.date.dayOfMonth.toString(),
                 modifier = Modifier.fillMaxWidth(),
                 textAlign = TextAlign.Center,
-                style = MaterialTheme.typography.h6,
+                style = MaterialTheme.typography.labelSmall,
             )
             // Divider(color = Color.Blue, thickness = 4.dp)
             if (item != null) {
-                Divider(color = Color.Green,
+                HorizontalDivider(color = Color.Green,
                     thickness = 4.dp,
                     modifier = Modifier.padding(vertical = 2.dp))
             }

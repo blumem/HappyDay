@@ -8,7 +8,7 @@ import androidx.test.filters.SmallTest
 import app.cash.turbine.test
 import de.blumesladen.data.local.database.AppDatabase
 import de.blumesladen.data.local.database.DiaryEntry
-import de.blumesladen.data.local.database.DiaryEntryDao
+import de.blumesladen.ui.diaryentry.DiaryEntryDao
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.ExperimentalCoroutinesApi
 import kotlinx.coroutines.test.TestDispatcher
@@ -23,6 +23,7 @@ import org.junit.Test
 import org.junit.rules.TestWatcher
 import org.junit.runner.Description
 import org.junit.runner.RunWith
+import java.time.LocalDate
 
 @RunWith(AndroidJUnit4::class)
 @SmallTest
@@ -46,11 +47,13 @@ class DiaryEntryDaoTest {
     fun insertDiaryEntry_returnsTrue(): Unit = runTest { // runBlocking in case of .allowMainThreadQueries()
         val entry1 = DiaryEntry(
             uid = 1,
+            entryDate = LocalDate.now().minusDays(2),
             forMyself = "aaaaaa",
             forOthers = "oooooo",
             unexpressedEmotions = "iiiiii")
         val entry2 = DiaryEntry(
             uid = 2,
+            entryDate = LocalDate.now().minusDays(1),
             forMyself = "eee",
             forOthers = "uuu",
             unexpressedEmotions = "yyy")

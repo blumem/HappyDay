@@ -22,6 +22,7 @@ plugins {
     alias(libs.plugins.android.application)
     alias(libs.plugins.kotlin.android)
     alias(libs.plugins.hilt.gradle)
+    alias(libs.plugins.navigation.safe.args)
     jacoco
     // jacoco github actions example:
     // https://github.com/marketplace/actions/jacoco-report
@@ -153,6 +154,7 @@ dependencies {
     implementation(libs.androidx.material)
     implementation(libs.composecalendar)
     implementation(libs.kotlinx.datetime)
+    testImplementation(libs.mockito.core)
     coreLibraryDesugaring(libs.desugar.jdk.libs)
     androidTestImplementation(libs.turbine)
     val composeBom = platform(libs.androidx.compose.bom)

@@ -2,7 +2,7 @@
   "formatVersion": 1,
   "database": {
     "version": 1,
-    "identityHash": "96ffab132471fa9191755aba699247de",
+    "identityHash": "570f3e0e3cbe561e5314ff24d20bca47",
     "entities": [
       {
         "tableName": "DiaryEntry",
@@ -74,14 +74,24 @@
             "uid"
           ]
         },
-        "indices": [],
+        "indices": [
+          {
+            "name": "index_DiaryEntry_entry_date",
+            "unique": true,
+            "columnNames": [
+              "entry_date"
+            ],
+            "orders": [],
+            "createSql": "CREATE UNIQUE INDEX IF NOT EXISTS `index_DiaryEntry_entry_date` ON `${TABLE_NAME}` (`entry_date`)"
+          }
+        ],
         "foreignKeys": []
       }
     ],
     "views": [],
     "setupQueries": [
       "CREATE TABLE IF NOT EXISTS room_master_table (id INTEGER PRIMARY KEY,identity_hash TEXT)",
-      "INSERT OR REPLACE INTO room_master_table (id,identity_hash) VALUES(42, '96ffab132471fa9191755aba699247de')"
+      "INSERT OR REPLACE INTO room_master_table (id,identity_hash) VALUES(42, '570f3e0e3cbe561e5314ff24d20bca47')"
     ]
   }
 }

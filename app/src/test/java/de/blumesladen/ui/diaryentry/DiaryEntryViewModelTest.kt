@@ -17,12 +17,7 @@
 package de.blumesladen.ui.diaryentry
 
 
-import de.blumesladen.data.DiaryEntryRepository
-import de.blumesladen.data.local.database.DiaryEntry
-import kotlinx.coroutines.ExperimentalCoroutinesApi
-import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.first
-import kotlinx.coroutines.flow.flow
 import kotlinx.coroutines.test.runTest
 import org.junit.Assert.assertEquals
 import org.junit.Test
@@ -32,7 +27,6 @@ import org.junit.Test
  *
  * See [testing documentation](http://d.android.com/tools/testing).
  */
-@OptIn(ExperimentalCoroutinesApi::class) // TODO: Remove when stable
 class DiaryEntryViewModelTest {
     @Test
     fun uiState_initiallyLoading() = runTest {
@@ -47,14 +41,3 @@ class DiaryEntryViewModelTest {
     }
 }
 
-private class FakeDiaryEntryRepository : DiaryEntryRepository {
-
-    private val data = mutableListOf<DiaryEntry>()
-
-    override val diaryEntrys: Flow<List<DiaryEntry>>
-        get() = flow { emit(data.toList()) }
-
-    override suspend fun add(diaryEntry: DiaryEntry) {
-        data.add(0, diaryEntry)
-    }
-}

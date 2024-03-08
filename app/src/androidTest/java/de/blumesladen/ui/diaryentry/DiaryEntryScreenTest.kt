@@ -28,9 +28,10 @@ import org.junit.Rule
 import org.junit.Test
 import org.junit.runner.RunWith
 import java.time.LocalDate
+import java.time.format.DateTimeFormatter
 
 /**
- * UI tests for [DiaryEntryScreen].
+ * UI tests for [DiaryEntriesCalendarScreen].
  */
 @RunWith(AndroidJUnit4::class)
 class DiaryEntryScreenTest {
@@ -49,7 +50,7 @@ class DiaryEntryScreenTest {
 
     @Test
     fun firstItem_exists() {
-        composeTestRule.onNodeWithText(FAKE_DATA.first()).assertExists().performClick()
+        composeTestRule.onNodeWithText(LocalDate.now().format(DateTimeFormatter.ofPattern("MMMM"))).assertExists().performClick()
     }
 }
 
