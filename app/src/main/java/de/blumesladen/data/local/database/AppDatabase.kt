@@ -26,5 +26,4 @@ import de.blumesladen.ui.diaryentry.DiaryEntryDao
 abstract class AppDatabase : RoomDatabase() {
     abstract fun diaryEntryDao(): DiaryEntryDao
 
-    abstract fun databaseDao(): DatabaseDao
 }

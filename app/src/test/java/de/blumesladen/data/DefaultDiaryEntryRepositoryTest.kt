@@ -17,7 +17,7 @@
 package de.blumesladen.data
 
 /**
- * Unit tests for [DefaultDiaryEntryRepository].
+ * Unit tests for [DiaryEntryRepositoryImpl].
  */
 
 import de.blumesladen.data.local.database.DiaryEntry

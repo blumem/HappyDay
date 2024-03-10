@@ -16,18 +16,15 @@
 
 package de.blumesladen.data.local.database
 
-import android.annotation.SuppressLint
 import androidx.room.ColumnInfo
 import androidx.room.Entity
 import androidx.room.Index
 import androidx.room.PrimaryKey
 import androidx.room.TypeConverter
-import io.github.boguszpawlowski.composecalendar.kotlinxDateTime.YearMonth
 import java.time.LocalDate
-import java.time.format.DateTimeFormatter
 
 @Entity(indices = [Index(value=["entry_date"], unique = true)])
-data class DiaryEntry constructor(
+data class DiaryEntry (
     @PrimaryKey(autoGenerate = true)
     @ColumnInfo(name = "uid")
     val uid: Int = 0,
@@ -49,14 +46,21 @@ data class DiaryEntry constructor(
     @ColumnInfo(name = "anticipation", defaultValue = "NULL")
     val anticipation: String? = null
 ) {
-    val entryDateFormatted : String
-        get() = entryDate.format(DateTimeFormatter.ofPattern("yyyy-MM-dd"))
-
     override fun toString() : String {
         return "$entryDate:\nFor myself: $forMyself\nFor others: $forOthers\n"
     }
 }
+class Converters {
+    @TypeConverter
+    fun fromTimestamp(value: String?): LocalDate? {
+        return value?.let { LocalDate.parse(it) }
+    }
 
+    @TypeConverter
+    fun toTimestamp(date: LocalDate?): String? {
+        return date?.toString()
+    }
+}
 /**
  * *****************************************************************************************
  * Github co-pilot prompt for Data Layer:
@@ -73,8 +77,16 @@ data class DiaryEntry constructor(
   Generate a fake implementation of the DateEntryRepository interface for testing purposes
     that is taking a injected hilt constructor and
     gets via init populated with 10 fake DiaryEntry objects.
+ * *****************************************************************************************
+ * Manual steps:
+ *   in the loop to populate fake entries, you need to change
+ *      entryDate = LocalDate.now().minusDays(i.toLong()),
+ *   to
+ *       entryDate = LocalDate.now().minusDays(i.toLong() - 1),
+ *   to avoid that we don't have today inside the test set.
+ * *****************************************************************************************
 
-  Create a HiltViewModel with a SavedStateHandle for the string parameter "date" of type LocalDate
+Create a HiltViewModel with a SavedStateHandle for the string parameter "date" of type LocalDate
   that uses the DiaryEntryRepository to load and insert DiaryEntries. The date parameter shall be
   stored in a local private variable and used to initialize the diaryEntry.
   If an object is loaded by entryDate it should return the corresponding object from the database
@@ -87,12 +99,6 @@ data class DiaryEntry constructor(
  *
  */
 
-@SuppressLint("NewApi")
-val fakeDiaryEntrys = listOf(
-    DiaryEntry(0, LocalDate.now(),1,1,"bike tour","made cashier smile","frustration","cookies"),
-    DiaryEntry(1, LocalDate.now().minusDays(1),1,1,"small walk","brought cookies to ping pong","anger",""),
-    DiaryEntry(2, LocalDate.now().minusDays(3),1,1,"Yoga","cleaned the floor","honry","")
-)
 /**
  * *****************************************************************************************
  * Github co-pilot prompt for Compose UI:
@@ -133,24 +139,9 @@ For all labels, use the XML string resources.
  create for both functions preview functions that show the DiaryEntryEditor and DiaryEntryEditScreen.
  */
 
-class Converters {
-    @TypeConverter
-    fun fromTimestamp(value: String?): LocalDate? {
-        return value?.let { LocalDate.parse(it) }
-    }
-
-    @TypeConverter
-    fun toTimestamp(date: LocalDate?): String? {
-        return date?.toString()
-    }
-
-    @TypeConverter
-    fun fromDate(value: String?): YearMonth? {
-        return value?.let{ YearMonth.parse(it) }
-    }
-
-    @TypeConverter
-    fun toTimestamp(date: YearMonth?): String? {
-        return date?.toString()
-    }
-}
+/**
+ * *****************************************************************************************
+ * Github co-pilot prompt for tests:
+ * *****************************************************************************************
+ * create unit test for all functions of DiaryEntryRepositoryImpl.
+ */
