@@ -77,14 +77,15 @@ class DiaryEntryEditScreenTest {
     @Test
     fun diaryEntryEditScreen_clicking_calendar_month_button_opens_dialog() {
         val labelString = composeTestRule.activity.getString(R.string.calendar_button_content_description)
-        val canceltring = composeTestRule.activity.getString(R.string.cancel_action)
+        val cancelString = composeTestRule.activity.getString(R.string.cancel_action)
         val element = composeTestRule.onNodeWithContentDescription(labelString)
 
         element.assertIsEnabled()
         element.performClick()
         composeTestRule.waitForIdle() // the dialog to open.
+        // TODO: translate "Selected date" to the current language
         composeTestRule.onNodeWithText("Selected date").assertExists("Date Picker Dialog didn't open")
-        composeTestRule.onNodeWithText(canceltring).performClick()
+        composeTestRule.onNodeWithText(cancelString).performClick()
         composeTestRule.waitForIdle() // the dialog to close
         composeTestRule.onNodeWithText("Selected date").assertDoesNotExist()
     }
