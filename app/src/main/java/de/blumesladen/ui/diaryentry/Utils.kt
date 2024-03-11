@@ -72,7 +72,7 @@ private fun convertMillisToDate(millis: Long): String {
 }
 
 @Composable
-fun CalendarTodayIcon(): ImageVector {
+fun calendarTodayIcon(): ImageVector {
     return remember {
         ImageVector.Builder(
             name = "calendar_month",

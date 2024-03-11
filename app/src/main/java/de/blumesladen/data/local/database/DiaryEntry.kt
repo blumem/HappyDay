@@ -113,7 +113,7 @@ For all labels, use the XML string resources.
  At the top, there is a Row Layout with verticalAlignment = Alignment.CenterVertically holding two
  components:
  1) For the entryDate use a disabled TextField and a modifier set weight to 0.75f (75% of the available space).
- 2) and a IconButton showing a calendar icon using the function CalendarTodayIcon() and
+ 2) and a IconButton showing a calendar icon using the function calendarTodayIcon() and
     the contentDescription set to  stringResource(R.string.calendar_button_content_description),
     that toggles a boolean variable showDatePickerDialog.
 

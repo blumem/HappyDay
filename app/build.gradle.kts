@@ -42,7 +42,7 @@ android {
     }
     testCoverage {
         // note there is a bug causing this version to be right now ignored. To be fixed by Google
-        //
+        // https://issuetracker.google.com/issues/324271174
         version = "0.8.11"
     }
     defaultConfig {
@@ -115,7 +115,7 @@ tasks.register<JacocoReport>("unitTestCoverageReport") {
         // human readable (written into './build/reports/jacoco/unitTestCoverageReport/html')
         html.required.set(true)
         // CI-readable (written into './build/reports/jacoco/unitTestCoverageReport/unitTestCoverageReport.xml')
-        // xml.enabled = true
+        xml.required.set(true) // required for CI
     }
     // Execution data generated when running the tests against classes instrumented by the JaCoCo agent.
     // This is enabled with 'enableUnitTestCoverage' in the 'debug' build type.

@@ -49,7 +49,7 @@ fun DiaryEntryEditor(
             )
 
             IconButton(onClick = { showDatePickerDialog = true }) {
-                Icon(CalendarTodayIcon(), contentDescription = stringResource(R.string.calendar_button_content_description))
+                Icon(calendarTodayIcon(), contentDescription = stringResource(R.string.calendar_button_content_description))
             }
         }
 
