@@ -17,6 +17,7 @@
 package de.blumesladen.ui.diaryentry
 
 
+import de.blumesladen.data.local.di.FakeDiaryEntryRepository
 import kotlinx.coroutines.flow.first
 import kotlinx.coroutines.test.runTest
 import org.junit.Assert.assertEquals

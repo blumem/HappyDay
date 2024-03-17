@@ -20,7 +20,6 @@ import androidx.room.ColumnInfo
 import androidx.room.Entity
 import androidx.room.Index
 import androidx.room.PrimaryKey
-import androidx.room.TypeConverter
 import java.time.LocalDate
 
 @Entity(indices = [Index(value=["entry_date"], unique = true)])
@@ -50,17 +49,7 @@ data class DiaryEntry (
         return "$entryDate:\nFor myself: $forMyself\nFor others: $forOthers\n"
     }
 }
-class Converters {
-    @TypeConverter
-    fun fromTimestamp(value: String?): LocalDate? {
-        return value?.let { LocalDate.parse(it) }
-    }
 
-    @TypeConverter
-    fun toTimestamp(date: LocalDate?): String? {
-        return date?.toString()
-    }
-}
 /**
  * *****************************************************************************************
  * Github co-pilot prompt for Data Layer:

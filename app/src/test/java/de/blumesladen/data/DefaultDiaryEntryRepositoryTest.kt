@@ -21,8 +21,8 @@ package de.blumesladen.data
  */
 
 import de.blumesladen.data.local.database.DiaryEntry
-import de.blumesladen.ui.diaryentry.DiaryEntryDao
-import de.blumesladen.ui.diaryentry.DiaryEntryRepositoryImpl
+import de.blumesladen.data.local.di.DiaryEntryDao
+import de.blumesladen.data.local.di.DiaryEntryRepositoryImpl
 import kotlinx.coroutines.flow.first
 import kotlinx.coroutines.flow.flowOf
 import kotlinx.coroutines.runBlocking

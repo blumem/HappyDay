@@ -8,7 +8,7 @@ import androidx.test.filters.SmallTest
 import app.cash.turbine.test
 import de.blumesladen.data.local.database.AppDatabase
 import de.blumesladen.data.local.database.DiaryEntry
-import de.blumesladen.ui.diaryentry.DiaryEntryDao
+import de.blumesladen.data.local.di.DiaryEntryDao
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.ExperimentalCoroutinesApi
 import kotlinx.coroutines.test.TestDispatcher

@@ -1,4 +1,4 @@
-package de.blumesladen.ui.diaryentry
+package de.blumesladen.data.local.di
 
 import android.util.Log
 import androidx.compose.runtime.mutableStateOf

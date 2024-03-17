@@ -24,7 +24,6 @@ import dagger.hilt.InstallIn
 import dagger.hilt.android.qualifiers.ApplicationContext
 import dagger.hilt.components.SingletonComponent
 import de.blumesladen.data.local.database.AppDatabase
-import de.blumesladen.ui.diaryentry.DiaryEntryDao
 import javax.inject.Singleton
 
 
@@ -36,13 +35,50 @@ class DatabaseModule {
         return appDatabase.diaryEntryDao()
     }
 
+//    @Provides
+//    fun provideHabitDao(appDatabase: AppDatabase): HabitDao {
+//        return appDatabase.habitDao()
+//    }
+
     @Provides
     @Singleton
-    fun provideAppDatabase(@ApplicationContext appContext: Context): AppDatabase {
+    fun provideAppDatabase(@ApplicationContext appContext: Context
+//                           habitProvider: Provider<HabitDao>
+    ): AppDatabase {
         return Room.databaseBuilder(
             appContext,
             AppDatabase::class.java,
-            "DiaryEntry"
-        ).fallbackToDestructiveMigration().build()
+            "HappyDayDatabase",
+        )
+            .fallbackToDestructiveMigration()
+//            .addCallback(RoomDbInitializer(habitProvider = habitProvider))
+            .build()
     }
+
 }
+//
+//class RoomDbInitializer(
+//    private val habitProvider: Provider<HabitDao>,
+//) : RoomDatabase.Callback() {
+//    private val applicationScope = CoroutineScope(SupervisorJob())
+//
+//    override fun onCreate(db: SupportSQLiteDatabase) {
+//        super.onCreate(db)
+//        applicationScope.launch(Dispatchers.IO) {
+//            populateDatabase()
+//        }
+//    }
+//
+//    private suspend fun populateDatabase() {
+//        // Insert your default Habit rows here
+//        val defaultHabit1 = Habit(name = "Abstinent", description = "Have I stayed abstinent today?")
+//        val defaultHabit2 = Habit(name = "Exercised", description = "Have I exercised today?")
+//
+//        habitProvider.get().insertHabit(defaultHabit1)
+//        habitProvider.get().insertHabit(defaultHabit2)
+//    }
+//}
+
+
+
+

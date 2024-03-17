@@ -4,6 +4,7 @@ import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import dagger.hilt.android.lifecycle.HiltViewModel
 import de.blumesladen.data.local.database.DiaryEntry
+import de.blumesladen.data.local.di.DiaryEntryRepository
 import de.blumesladen.ui.diaryentry.DiaryEntriesUiState.Error
 import de.blumesladen.ui.diaryentry.DiaryEntriesUiState.Loading
 import de.blumesladen.ui.diaryentry.DiaryEntriesUiState.Success

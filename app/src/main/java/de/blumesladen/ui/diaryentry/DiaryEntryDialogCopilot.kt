@@ -28,6 +28,8 @@ import androidx.navigation.NavController
 import androidx.navigation.compose.rememberNavController
 import de.blumesladen.R
 import de.blumesladen.data.local.database.DiaryEntry
+import de.blumesladen.data.local.di.DiaryEntryViewModel
+import de.blumesladen.data.local.di.FakeDiaryEntryRepository
 import java.time.LocalDate
 
 

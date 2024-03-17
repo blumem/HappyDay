@@ -17,6 +17,8 @@ import dagger.hilt.android.testing.HiltAndroidRule
 import dagger.hilt.android.testing.HiltAndroidTest
 import de.blumesladen.R
 import de.blumesladen.data.local.database.DiaryEntry
+import de.blumesladen.data.local.di.DiaryEntryViewModel
+import de.blumesladen.data.local.di.FakeDiaryEntryRepository
 import org.junit.Before
 import org.junit.Rule
 import org.junit.Test

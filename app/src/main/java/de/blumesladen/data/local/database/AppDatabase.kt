@@ -18,12 +18,47 @@ package de.blumesladen.data.local.database
 
 import androidx.room.Database
 import androidx.room.RoomDatabase
+import androidx.room.TypeConverter
 import androidx.room.TypeConverters
-import de.blumesladen.ui.diaryentry.DiaryEntryDao
+import de.blumesladen.data.local.di.DiaryEntryDao
+import java.time.LocalDate
+import java.time.LocalDateTime
 
-@Database(entities = [DiaryEntry::class], version= 2)
+@Database(
+    entities = [
+        DiaryEntry::class,
+//    Habit::class
+    ],
+    version= 2)
 @TypeConverters(Converters::class)
 abstract class AppDatabase : RoomDatabase() {
     abstract fun diaryEntryDao(): DiaryEntryDao
+   // abstract fun habitDao(): HabitDao
+}
+class Converters {
+    /**
+     * Convert a string value to a [LocalDate]
+     */
+    @TypeConverter
+    fun fromTimestamp(value: String?): LocalDate? {
+        return value?.let { LocalDate.parse(it) }
+    }
 
+    @TypeConverter
+    fun toTimestamp(date: LocalDate?): String? {
+        return date?.toString()
+    }
+
+    /**
+     * Convert a string value to a [LocalDateTime]
+     */
+    @TypeConverter
+    fun fromDateTimestamp(value: String?): LocalDateTime? {
+        return value?.let { LocalDateTime.parse(it) }
+    }
+
+    @TypeConverter
+    fun toDateTimestamp(date: LocalDateTime?): String? {
+        return date?.toString()
+    }
 }

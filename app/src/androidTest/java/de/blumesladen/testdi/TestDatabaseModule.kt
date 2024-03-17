@@ -21,8 +21,8 @@ import dagger.Module
 import dagger.hilt.components.SingletonComponent
 import dagger.hilt.testing.TestInstallIn
 import de.blumesladen.data.di.DataModule
-import de.blumesladen.ui.diaryentry.DiaryEntryRepository
-import de.blumesladen.ui.diaryentry.FakeDiaryEntryRepository
+import de.blumesladen.data.local.di.DiaryEntryRepository
+import de.blumesladen.data.local.di.FakeDiaryEntryRepository
 
 @Module
 @TestInstallIn(

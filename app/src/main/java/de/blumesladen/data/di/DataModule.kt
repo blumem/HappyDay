@@ -22,8 +22,8 @@ import dagger.Module
 import dagger.hilt.InstallIn
 import dagger.hilt.components.SingletonComponent
 import de.blumesladen.data.local.database.DiaryEntry
-import de.blumesladen.ui.diaryentry.DiaryEntryRepository
-import de.blumesladen.ui.diaryentry.DiaryEntryRepositoryImpl
+import de.blumesladen.data.local.di.DiaryEntryRepository
+import de.blumesladen.data.local.di.DiaryEntryRepositoryImpl
 import java.time.LocalDate
 import javax.inject.Singleton
 

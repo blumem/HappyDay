@@ -24,6 +24,9 @@ kotlinxDatetime = "1.2.0"
 desugar_jdk_libs = "2.0.4"
 navigationSafeArgsGradlePlugin = "2.7.7"
 mockitoCore = "5.11.0"
+protoliteWellKnownTypes = "18.0.0"
+materialIconsCore = "1.7.0-alpha04"
+materialIconsExtended = "1.7.0-alpha04"
 
 [libraries]
 androidx-core-ktx = { module = "androidx.core:core-ktx", version.ref = "androidxCore" }
@@ -60,6 +63,9 @@ composecalendar = { group = "io.github.boguszpawlowski.composecalendar", name = 
 kotlinx-datetime = { group = "io.github.boguszpawlowski.composecalendar", name = "kotlinx-datetime", version.ref = "kotlinxDatetime" }
 desugar_jdk_libs = { group = "com.android.tools", name = "desugar_jdk_libs", version.ref = "desugar_jdk_libs" }
 mockito-core = { group = "org.mockito", name = "mockito-core", version.ref = "mockitoCore" }
+protolite-well-known-types = { group = "com.google.firebase", name = "protolite-well-known-types", version.ref = "protoliteWellKnownTypes" }
+androidx-material-icons-core = { group = "androidx.compose.material", name = "material-icons-core", version.ref = "materialIconsCore" }
+androidx-material-icons-extended = { group = "androidx.compose.material", name = "material-icons-extended", version.ref = "materialIconsExtended" }
 
 
 [plugins]
