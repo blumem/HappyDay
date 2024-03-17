@@ -1,0 +1,201 @@
+{
+  "formatVersion": 1,
+  "database": {
+    "version": 3,
+    "identityHash": "122ba471e34671cc9ce0712d4a5b4086",
+    "entities": [
+      {
+        "tableName": "DiaryEntry",
+        "createSql": "CREATE TABLE IF NOT EXISTS `${TABLE_NAME}` (`uid` INTEGER PRIMARY KEY AUTOINCREMENT NOT NULL, `entry_date` TEXT NOT NULL, `abstinent` INTEGER NOT NULL DEFAULT 0, `exercised` INTEGER NOT NULL DEFAULT 0, `for_myself` TEXT NOT NULL, `for_others` TEXT NOT NULL, `unexpressed_emotions` TEXT DEFAULT NULL, `something_good` TEXT DEFAULT NULL, `anticipation` TEXT DEFAULT NULL)",
+        "fields": [
+          {
+            "fieldPath": "uid",
+            "columnName": "uid",
+            "affinity": "INTEGER",
+            "notNull": true
+          },
+          {
+            "fieldPath": "entryDate",
+            "columnName": "entry_date",
+            "affinity": "TEXT",
+            "notNull": true
+          },
+          {
+            "fieldPath": "abstinent",
+            "columnName": "abstinent",
+            "affinity": "INTEGER",
+            "notNull": true,
+            "defaultValue": "0"
+          },
+          {
+            "fieldPath": "exercised",
+            "columnName": "exercised",
+            "affinity": "INTEGER",
+            "notNull": true,
+            "defaultValue": "0"
+          },
+          {
+            "fieldPath": "forMyself",
+            "columnName": "for_myself",
+            "affinity": "TEXT",
+            "notNull": true
+          },
+          {
+            "fieldPath": "forOthers",
+            "columnName": "for_others",
+            "affinity": "TEXT",
+            "notNull": true
+          },
+          {
+            "fieldPath": "unexpressedEmotions",
+            "columnName": "unexpressed_emotions",
+            "affinity": "TEXT",
+            "notNull": false,
+            "defaultValue": "NULL"
+          },
+          {
+            "fieldPath": "somethingGood",
+            "columnName": "something_good",
+            "affinity": "TEXT",
+            "notNull": false,
+            "defaultValue": "NULL"
+          },
+          {
+            "fieldPath": "anticipation",
+            "columnName": "anticipation",
+            "affinity": "TEXT",
+            "notNull": false,
+            "defaultValue": "NULL"
+          }
+        ],
+        "primaryKey": {
+          "autoGenerate": true,
+          "columnNames": [
+            "uid"
+          ]
+        },
+        "indices": [
+          {
+            "name": "index_DiaryEntry_entry_date",
+            "unique": true,
+            "columnNames": [
+              "entry_date"
+            ],
+            "orders": [],
+            "createSql": "CREATE UNIQUE INDEX IF NOT EXISTS `index_DiaryEntry_entry_date` ON `${TABLE_NAME}` (`entry_date`)"
+          }
+        ],
+        "foreignKeys": []
+      },
+      {
+        "tableName": "Habit",
+        "createSql": "CREATE TABLE IF NOT EXISTS `${TABLE_NAME}` (`id` INTEGER PRIMARY KEY AUTOINCREMENT NOT NULL, `name` TEXT NOT NULL, `description` TEXT NOT NULL, `createDateTime` TEXT NOT NULL, `nextDueDateTime` TEXT NOT NULL, `priority` INTEGER NOT NULL, `secondsUntilNext` INTEGER NOT NULL, `isFavourite` INTEGER NOT NULL, `isArchived` INTEGER NOT NULL, `isDeleted` INTEGER NOT NULL, `isSnoozed` INTEGER NOT NULL, `snoozeDateTime` TEXT, `snoozeDuration` INTEGER NOT NULL, `snoozeDurationUnit` TEXT NOT NULL, `snoozeCount` INTEGER NOT NULL)",
+        "fields": [
+          {
+            "fieldPath": "id",
+            "columnName": "id",
+            "affinity": "INTEGER",
+            "notNull": true
+          },
+          {
+            "fieldPath": "name",
+            "columnName": "name",
+            "affinity": "TEXT",
+            "notNull": true
+          },
+          {
+            "fieldPath": "description",
+            "columnName": "description",
+            "affinity": "TEXT",
+            "notNull": true
+          },
+          {
+            "fieldPath": "createDateTime",
+            "columnName": "createDateTime",
+            "affinity": "TEXT",
+            "notNull": true
+          },
+          {
+            "fieldPath": "nextDueDateTime",
+            "columnName": "nextDueDateTime",
+            "affinity": "TEXT",
+            "notNull": true
+          },
+          {
+            "fieldPath": "priority",
+            "columnName": "priority",
+            "affinity": "INTEGER",
+            "notNull": true
+          },
+          {
+            "fieldPath": "secondsUntilNext",
+            "columnName": "secondsUntilNext",
+            "affinity": "INTEGER",
+            "notNull": true
+          },
+          {
+            "fieldPath": "isFavourite",
+            "columnName": "isFavourite",
+            "affinity": "INTEGER",
+            "notNull": true
+          },
+          {
+            "fieldPath": "isArchived",
+            "columnName": "isArchived",
+            "affinity": "INTEGER",
+            "notNull": true
+          },
+          {
+            "fieldPath": "isDeleted",
+            "columnName": "isDeleted",
+            "affinity": "INTEGER",
+            "notNull": true
+          },
+          {
+            "fieldPath": "isSnoozed",
+            "columnName": "isSnoozed",
+            "affinity": "INTEGER",
+            "notNull": true
+          },
+          {
+            "fieldPath": "snoozeDateTime",
+            "columnName": "snoozeDateTime",
+            "affinity": "TEXT",
+            "notNull": false
+          },
+          {
+            "fieldPath": "snoozeDuration",
+            "columnName": "snoozeDuration",
+            "affinity": "INTEGER",
+            "notNull": true
+          },
+          {
+            "fieldPath": "snoozeDurationUnit",
+            "columnName": "snoozeDurationUnit",
+            "affinity": "TEXT",
+            "notNull": true
+          },
+          {
+            "fieldPath": "snoozeCount",
+            "columnName": "snoozeCount",
+            "affinity": "INTEGER",
+            "notNull": true
+          }
+        ],
+        "primaryKey": {
+          "autoGenerate": true,
+          "columnNames": [
+            "id"
+          ]
+        },
+        "indices": [],
+        "foreignKeys": []
+      }
+    ],
+    "views": [],
+    "setupQueries": [
+      "CREATE TABLE IF NOT EXISTS room_master_table (id INTEGER PRIMARY KEY,identity_hash TEXT)",
+      "INSERT OR REPLACE INTO room_master_table (id,identity_hash) VALUES(42, '122ba471e34671cc9ce0712d4a5b4086')"
+    ]
+  }
+}

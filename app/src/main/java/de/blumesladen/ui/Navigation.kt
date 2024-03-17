@@ -40,18 +40,22 @@ import androidx.navigation.navArgument
 import de.blumesladen.R
 import de.blumesladen.ui.diaryentry.DiaryEntriesCalendarScreen
 import de.blumesladen.ui.diaryentry.DiaryEntryEditScreen
+import de.blumesladen.ui.habit.HabitListView
 import java.time.LocalDate
 
 sealed class Screen(val route: String, @StringRes val resourceId: Int) {
+    object HabitEntryDialogRoute : Screen("rDHabitEntryDialog", R.string.rHabitEntryDialog)
     object DiaryEntryEditRoute : Screen("rDiaryEntryEdit", R.string.rDiaryEntryEdit)
     object DiaryEntryViewRoute : Screen("rDiaryEntryView", R.string.rDiaryEntryView)
 }
 
 val items = listOf(
+    Screen.HabitEntryDialogRoute,
     Screen.DiaryEntryEditRoute,
     Screen.DiaryEntryViewRoute,
 )
 val itemsIcons = listOf(
+    R.drawable.calendar_month,
     R.drawable.edit_calendar,
     R.drawable.calendar_month
 )
@@ -80,9 +84,9 @@ fun MainNavigation() {
                                     saveState = true
                                 }
                                 // Avoid multiple copies of the same destination when
-                                // reselecting the same item
+                                // re-selecting the same item
                                 launchSingleTop = true
-                                // Restore state when reselecting a previously selected item
+                                // Restore state when re-selecting a previously selected item
                                 restoreState = true
                             }
                         }
@@ -93,7 +97,7 @@ fun MainNavigation() {
     ) { innerPadding ->
         NavHost(
             navController = navController,
-            startDestination = Screen.DiaryEntryViewRoute.route,
+            startDestination = Screen.HabitEntryDialogRoute.route,
             modifier = Modifier.padding(innerPadding)
         ) {
             composable(Screen.DiaryEntryEditRoute.route+"?date={date}",
@@ -109,6 +113,10 @@ fun MainNavigation() {
             // TODO: Add more destinations
             composable(Screen.DiaryEntryViewRoute.route) {
                 DiaryEntriesCalendarScreen(navController, modifier = Modifier.padding(16.dp))
+            }
+
+            composable(Screen.HabitEntryDialogRoute.route) {
+                HabitListView()                    // navController, modifier = Modifier.padding(16.dp))
             }
         }
     }

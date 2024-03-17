@@ -14,7 +14,25 @@
  * limitations under the License.
  */
 
-// Root build.gradle.kts
-//plugins {
-//    id("io.github.usefulness.ktlint-gradle-plugin") version "0.9.0"
-//}
+package de.blumesladen.data
+
+import dagger.Module
+import dagger.Provides
+import dagger.hilt.InstallIn
+import dagger.hilt.components.SingletonComponent
+import de.blumesladen.data.local.di.HabitDao
+import de.blumesladen.data.local.di.HabitRepository
+import de.blumesladen.data.local.di.HabitRepositoryImpl
+
+
+@Module
+@InstallIn(SingletonComponent::class)
+object RepositoryModule {
+
+    @Provides
+    fun provideHabitRepository(habitDao: HabitDao): HabitRepository {
+        return HabitRepositoryImpl(habitDao) // replace with your implementation
+    }
+}
+
+

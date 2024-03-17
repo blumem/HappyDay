@@ -40,7 +40,7 @@ class DiaryEntryDaoTest {
             AppDatabase::class.java
         ).build()  // .allowMainThreadQueries().build() alternatively
 
-        diaryEntryDao = database.diaryEntryDao()
+        diaryEntryDao = database.diaryEntryDao
     }
 
     @Test

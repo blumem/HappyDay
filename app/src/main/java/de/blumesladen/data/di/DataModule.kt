@@ -36,11 +36,19 @@ interface DataModule {
     fun bindsDiaryEntryRepository(
         diaryEntryRepository: DiaryEntryRepositoryImpl
     ): DiaryEntryRepository
+
+//    @Singleton
+//    @Binds
+//    fun bindsHabitRepository(
+//        habitRepository: HabitRepositoryImpl
+//    ): HabitRepository
 }
 
+
 @SuppressLint("NewApi")
-val fakeDiaryEntrys = listOf(
+val fakeDiaryEntries = listOf(
     DiaryEntry(0, LocalDate.now(),1,1,"bike tour","made cashier smile","frustration","cookies"),
     DiaryEntry(1, LocalDate.now().minusDays(1),1,1,"small walk","brought cookies to ping pong","anger",""),
     DiaryEntry(2, LocalDate.now().minusDays(3),1,1,"Yoga","cleaned the floor","honry","")
 )
+

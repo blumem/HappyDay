@@ -30,15 +30,7 @@ import javax.inject.Singleton
 @Module
 @InstallIn(SingletonComponent::class)
 class DatabaseModule {
-    @Provides
-    fun provideDiaryEntryDao(appDatabase: AppDatabase): DiaryEntryDao {
-        return appDatabase.diaryEntryDao()
-    }
 
-//    @Provides
-//    fun provideHabitDao(appDatabase: AppDatabase): HabitDao {
-//        return appDatabase.habitDao()
-//    }
 
     @Provides
     @Singleton
@@ -46,17 +38,29 @@ class DatabaseModule {
 //                           habitProvider: Provider<HabitDao>
     ): AppDatabase {
         return Room.databaseBuilder(
-            appContext,
+            appContext.applicationContext,
             AppDatabase::class.java,
-            "HappyDayDatabase",
+            "HappyDayDatabase.db",
         )
             .fallbackToDestructiveMigration()
 //            .addCallback(RoomDbInitializer(habitProvider = habitProvider))
             .build()
     }
 
+    @Provides
+    fun provideDiaryEntryDao(db: AppDatabase): DiaryEntryDao = db.diaryEntryDao
+
+
+    @Provides
+    fun provideHabitDao(db: AppDatabase): HabitDao = db.habitDao
+
 }
-//
+
+// INSERT INTO Habit (id, name, description, createDateTime, nextDueDateTime, priority, secondsUntilNext, isFavourite, isArchived, isDeleted, isSnoozed,snoozeDuration, snoozeDurationUnit,snoozeCount)
+//    VALUES (1, "abstinent", "Did I stay abstinent today?",'2021-12-01T14:30:15', '2024-03-16T14:30:15', 0,  86400, 1,0,0,0,0,"days",0)
+//INSERT INTO Habit (id, name, description, createDateTime, nextDueDateTime, priority, secondsUntilNext, isFavourite, isArchived, isDeleted, isSnoozed,snoozeDuration, snoozeDurationUnit,snoozeCount)
+//   VALUES (2, "exercised", "Did I exercise today?",'2021-12-01T14:30:15', '2024-03-16T14:30:15', 0,  86400, 1,0,0,0,0,"days",0)
+
 //class RoomDbInitializer(
 //    private val habitProvider: Provider<HabitDao>,
 //) : RoomDatabase.Callback() {

@@ -7,7 +7,7 @@ import androidx.room.PrimaryKey
 import java.time.LocalDateTime
 
 
-@Entity(tableName = "habit")
+@Entity
 data class Habit (
     @PrimaryKey(autoGenerate = true) val id: Long = 0,
     val name: String = "",
@@ -68,12 +68,11 @@ If the Habit isSnoozed, the card should have a Icons.Rounded.Snooze before the t
 Create two preview function for the Composable function that shows the HabitCard once with a
 isSnoozed=true record and once with a isSnoozed=false fake Habit record.
 
-Create a jetpack Compose function called HabitEditor that takes a Habit and a
-function onValueChange calling viewModel::updateHabit as parameters.
-The function does not create it's own mutable state of the DiaryEntry but uses the one passed as parameter.
-Therefore every onValueChange inside the function for each component should call the onValueChange-parameter function
-just passing the diaryEntry.copy() with the new value.
-For all labels, use the XML string resources.
+Create a jetpack Compose function called HabitEditor that takes a HabitViewModel as a parameter.
+ The function lists all habits in a LazyColumn using the HabitCard Composable.
+  Each Card can be swiped left to snooze the habit.
+  Each Card can be swiped right to mark the habit as done.
+
 */
 
 @Entity(tableName = "habit_entry",

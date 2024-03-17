@@ -43,7 +43,7 @@ import androidx.compose.ui.unit.dp
 import androidx.hilt.navigation.compose.hiltViewModel
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import androidx.navigation.NavController
-import de.blumesladen.data.di.fakeDiaryEntrys
+import de.blumesladen.data.di.fakeDiaryEntries
 import de.blumesladen.data.local.database.DiaryEntry
 import de.blumesladen.ui.Screen
 import de.blumesladen.ui.diaryentry.DiaryEntriesUiState.Success
@@ -176,7 +176,7 @@ private fun DayContent(
 private fun DefaultPreview() {
     MyApplicationTheme {
         DiaryEntryScreenForm(
-            fakeDiaryEntrys,
+            fakeDiaryEntries,
             onMonthChanged = {},
             onSelectionChanged = {}
         )
@@ -188,7 +188,7 @@ private fun DefaultPreview() {
 private fun PortraitPreview() {
     MyApplicationTheme {
         DiaryEntryScreenForm(
-            fakeDiaryEntrys,
+            fakeDiaryEntries,
             onMonthChanged = {},
             onSelectionChanged = {}
         )

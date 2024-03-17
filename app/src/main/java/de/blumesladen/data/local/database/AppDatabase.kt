@@ -21,19 +21,15 @@ import androidx.room.RoomDatabase
 import androidx.room.TypeConverter
 import androidx.room.TypeConverters
 import de.blumesladen.data.local.di.DiaryEntryDao
+import de.blumesladen.data.local.di.HabitDao
 import java.time.LocalDate
 import java.time.LocalDateTime
 
-@Database(
-    entities = [
-        DiaryEntry::class,
-//    Habit::class
-    ],
-    version= 2)
+@Database(entities = [DiaryEntry::class, Habit::class],version= 3)
 @TypeConverters(Converters::class)
 abstract class AppDatabase : RoomDatabase() {
-    abstract fun diaryEntryDao(): DiaryEntryDao
-   // abstract fun habitDao(): HabitDao
+    abstract val diaryEntryDao: DiaryEntryDao
+    abstract val habitDao: HabitDao
 }
 class Converters {
     /**
